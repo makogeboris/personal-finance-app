@@ -47,7 +47,8 @@ export function SignupForm({
     formState: { errors, isSubmitting },
   } = useForm<SignupFormValues>({
     resolver: zodResolver(signupSchema),
-    mode: "onTouched",
+    mode: "onSubmit",
+    reValidateMode: "onChange",
   });
 
   const onSubmit = async (data: SignupFormValues) => {
@@ -58,14 +59,14 @@ export function SignupForm({
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card className="overflow-hidden p-0">
-        <CardContent className="grid p-0 md:grid-cols-2">
-          <form className="p-6 md:p-8" onSubmit={handleSubmit(onSubmit)}>
+        <CardContent className="grid p-0 lg:grid-cols-2">
+          <form className="p-6 lg:p-8" onSubmit={handleSubmit(onSubmit)}>
             <FieldGroup>
               <div className="flex flex-col items-center gap-2 text-center">
-                <h1 className="text-foreground text-3xl font-bold">
+                <h1 className="text-foreground xs:text-3xl text-2xl font-bold">
                   Create your account
                 </h1>
-                <p className="text-muted-foreground text-base text-balance">
+                <p className="text-muted-foreground xs:text-base text-sm text-balance">
                   Enter your details below to create your account
                 </p>
               </div>

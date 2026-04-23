@@ -8,12 +8,12 @@ export function Logo() {
         height={40}
         src="/icons/icon-app.png"
         alt=""
-        className="h-8 w-8 sm:h-10 sm:w-10"
+        className="xs:h-10 xs:w-10 h-8 w-8"
         placeholder="empty"
         priority
       />
 
-      <div className="relative h-8 w-24.25 sm:w-30.5">
+      <div className="xs:w-30.5 relative h-8 w-24.25">
         <Image
           src="/icons/logo-large.svg"
           alt="finance"
@@ -35,12 +35,12 @@ export function LogoDark() {
         height={40}
         src="/icons/icon-app-dark.png"
         alt=""
-        className="h-8 w-8 sm:h-10 sm:w-10"
+        className="xs:h-10 xs:w-10 h-8 w-8"
         placeholder="empty"
         priority
       />
 
-      <div className="relative h-8 w-24.25 sm:w-30.5">
+      <div className="xs:w-30.5 relative h-8 w-24.25">
         <Image
           src="/icons/logo-dark.svg"
           alt="finance"
