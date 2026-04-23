@@ -1,20 +1,19 @@
 import Image from "next/image";
 
-export default function Logo() {
+export function Logo() {
   return (
-    <div className="text flex items-center">
+    <>
       <Image
         width={40}
         height={40}
         src="/icons/icon-app.png"
         alt=""
-        style={{ width: "auto", height: "auto" }}
-        className="w-8 md:w-10"
+        className="h-8 w-8 sm:h-10 sm:w-10"
         placeholder="empty"
         priority
       />
 
-      <div className="relative h-8 w-24.25 md:w-30.5">
+      <div className="relative h-8 w-24.25 sm:w-30.5">
         <Image
           src="/icons/logo-large.svg"
           alt="finance"
@@ -24,6 +23,33 @@ export default function Logo() {
           priority
         />
       </div>
-    </div>
+    </>
+  );
+}
+
+export function LogoDark() {
+  return (
+    <>
+      <Image
+        width={40}
+        height={40}
+        src="/icons/icon-app-dark.png"
+        alt=""
+        className="h-8 w-8 sm:h-10 sm:w-10"
+        placeholder="empty"
+        priority
+      />
+
+      <div className="relative h-8 w-24.25 sm:w-30.5">
+        <Image
+          src="/icons/logo-dark.svg"
+          alt="finance"
+          fill
+          className="object-contain"
+          placeholder="empty"
+          priority
+        />
+      </div>
+    </>
   );
 }

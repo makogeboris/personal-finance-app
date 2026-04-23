@@ -1,4 +1,4 @@
-import Logo from "../shared/Logo";
+import { Logo } from "../shared/Logo";
 
 export default function Illustration() {
   return (
@@ -10,7 +10,9 @@ export default function Illustration() {
         backgroundSize: "cover",
       }}
     >
-      <Logo />
+      <div className="flex items-center">
+        <Logo />
+      </div>
 
       {/* <div className="flex flex-col items-end gap-4">
         <h3 className="text-xl font-bold text-white">

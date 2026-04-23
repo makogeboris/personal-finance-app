@@ -37,7 +37,7 @@ const features = [
     dark: false,
   },
   {
-    icon: "/icons/icon-shield-plus.svg",
+    icon: "/icons/icon-shield.svg",
     iconBg: "bg-red/10",
     title: "Secure by Default",
     desc: "Row-level security ensures your data is always yours. Manage your account anytime from your profile page.",
