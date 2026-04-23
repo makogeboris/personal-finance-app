@@ -1,9 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import clsx from "clsx";
 import { useEffect, useState } from "react";
+import { LogoDark } from "../shared/Logo";
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -32,27 +32,7 @@ export default function Navbar() {
             href="/"
             className="focus-visible:outline-primary/90 flex items-center rounded-xs text-xl font-extrabold tracking-tight focus-visible:outline-2 focus-visible:outline-offset-2"
           >
-            <Image
-              width={40}
-              height={40}
-              src="/icons/icon-app-dark.png"
-              alt=""
-              style={{ height: "auto", width: "auto" }}
-              className="h-auto w-8 md:w-10"
-              placeholder="empty"
-              priority
-            />
-
-            <div className="relative h-8 w-24.25 md:w-30.5">
-              <Image
-                src="/icons/logo-dark.svg"
-                alt="finance"
-                fill
-                className="object-contain"
-                placeholder="empty"
-                priority
-              />
-            </div>
+            <LogoDark />
           </Link>
 
           {/* Desktop nav links */}
