@@ -3,7 +3,7 @@ import { Logo } from "../shared/Logo";
 export default function Illustration() {
   return (
     <div
-      className="hidden flex-col items-start justify-between p-5 md:flex"
+      className="hidden flex-col items-start justify-between p-5 lg:flex"
       style={{
         backgroundImage: "url('/images/illustration-authentication.svg')",
         height: "100%",

@@ -19,14 +19,14 @@ export default function Footer() {
         <div className="flex flex-col items-center gap-3">
           <Link
             href="/signup"
-            className="text-foreground hover:bg-secondary bg-background rounded-full px-8 py-3 font-semibold transition"
+            className="text-foreground hover:bg-secondary bg-background rounded-full px-8 py-3 text-sm font-semibold transition"
           >
             Create free account
           </Link>
 
           <Link
             href="/demo"
-            className="bg-chart-1 text-background rounded-full px-8 py-3 font-semibold transition hover:opacity-90"
+            className="bg-chart-1 text-background rounded-full px-8 py-3 text-sm font-semibold transition hover:opacity-90"
           >
             Explore the demo
           </Link>

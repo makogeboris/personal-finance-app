@@ -109,11 +109,11 @@ export default function Navbar() {
 
         {/* Mobile menu */}
         <div
-          className={`bg-secondary border-border overflow-hidden border-t transition-all duration-300 md:hidden ${
+          className={`bg-muted border-border overflow-hidden border-t transition-all duration-300 md:hidden ${
             menuOpen ? "max-h-64 opacity-100" : "max-h-0 opacity-0"
           }`}
         >
-          <div className="flex flex-col gap-4 px-6 py-6">
+          <div className="flex flex-col items-center gap-4 px-6 py-6">
             <a
               href="#features"
               className="text-muted-foreground text-sm font-medium"
@@ -128,16 +128,16 @@ export default function Navbar() {
             >
               How it works
             </a>
-            <div className="border-border flex flex-col gap-3 border-t pt-2">
+            <div className="border-border flex flex-col items-center gap-3 border-t pt-2">
               <Link
                 href="/login"
-                className="text-foreground text-sm font-medium"
+                className="text-foreground text-sm font-semibold"
               >
                 Log in
               </Link>
               <Link
                 href="/signup"
-                className="text-primary-foreground bg-primary hover:bg-chart-1 rounded-full px-5 py-2.5 text-center text-sm font-semibold transition-colors"
+                className="text-primary-foreground bg-primary w-fit rounded-full px-5 py-2.5 text-center text-sm font-semibold"
               >
                 Get started
               </Link>
