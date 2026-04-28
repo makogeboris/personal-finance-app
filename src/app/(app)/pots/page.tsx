@@ -5,5 +5,5 @@ export const metadata: Metadata = {
 };
 
 export default function Pots() {
-  return <p>Pots</p>;
+  return <h1 className="text-primary text-32 font-bold">Pots</h1>;
 }

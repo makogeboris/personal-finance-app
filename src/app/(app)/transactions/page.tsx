@@ -5,5 +5,5 @@ export const metadata: Metadata = {
 };
 
 export default function Transactions() {
-  return <p>Transactions</p>;
+  return <h1 className="text-primary text-32 font-bold">Transactions</h1>;
 }

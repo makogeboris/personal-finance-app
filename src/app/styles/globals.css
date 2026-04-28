@@ -7,7 +7,11 @@
   --breakpoint-xs: 480px;
   --breakpoint-sm: 640px;
   --breakpoint-md: 768px;
-  --breakpoint-lg: 1024px;
+  --breakpoint-lg: 1110px;
+
+  --text-32: 2rem;
+  --radius-12: 12px;
+  --radius-16: 16px;
 
   /* Font */
   --font-sans: var(--font-public-sans), sans-serif;
@@ -166,4 +170,41 @@
     height: -moz-available;
     height: fill-available;
   }
+}
+
+.grid-layout {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: 1fr;
+  grid-template-areas:
+    "stats"
+    "pots"
+    "transactions"
+    "budgets"
+    "bills";
+}
+@media (min-width: 1024px) {
+  .grid-layout {
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+      "stats        stats"
+      "pots         budgets"
+      "transactions budgets"
+      "transactions bills";
+  }
+}
+.area-stats {
+  grid-area: stats;
+}
+.area-pots {
+  grid-area: pots;
+}
+.area-transactions {
+  grid-area: transactions;
+}
+.area-budgets {
+  grid-area: budgets;
+}
+.area-bills {
+  grid-area: bills;
 }

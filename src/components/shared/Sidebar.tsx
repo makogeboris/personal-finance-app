@@ -40,7 +40,7 @@ export function Sidebar() {
       animate={{ width: collapsed ? 88 : 300 }}
       initial={false}
       transition={{ duration: 0.35, ease: [0.25, 0.46, 0.45, 0.94] }}
-      className="bg-primary text-primary-foreground hidden h-screen shrink-0 flex-col overflow-hidden rounded-r-[16px] lg:flex"
+      className="bg-primary text-primary-foreground rounded-r-16 hidden h-screen shrink-0 flex-col overflow-hidden lg:flex"
     >
       <div className="flex items-center border-l-4 border-transparent px-8 py-10">
         {collapsed ? NavIcons.logoSmall : NavIcons.logoApp}
@@ -79,7 +79,7 @@ export function Sidebar() {
         <button
           onClick={() => setCollapsed((prev) => !prev)}
           aria-label={collapsed ? "Expand menu" : "Minimize menu"}
-          className="group text-ring hover:bg-background/10 hover:text-background flex min-h-14 w-full cursor-pointer items-center gap-5 rounded-r-[12px] border-l-4 border-transparent py-4 pl-8"
+          className="group text-ring hover:bg-background/10 hover:text-background rounded-r-12 flex min-h-14 w-full cursor-pointer items-center gap-5 border-l-4 border-transparent py-4 pl-8"
         >
           <motion.div
             animate={{ rotate: collapsed ? 180 : 0 }}
@@ -121,7 +121,7 @@ function SidebarLink({
     <Link
       href={item.href}
       className={clsx(
-        "group flex min-h-14 items-center gap-5 rounded-r-[12px] border-l-4 py-4 pl-8 transition-colors",
+        "group rounded-r-12 flex min-h-14 items-center gap-5 border-l-4 py-4 pl-8 transition-colors",
         collapsed ? "px-0" : "px-4",
         active
           ? "bg-secondary text-primary border-chart-1"
