@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { ChartPieDonutText } from "../budgets/Chart";
+import { Card } from "../ui/card";
+import ChartSummary from "../budgets/ChartSummary";
 
 export default function Budgets() {
   return (
@@ -7,7 +9,7 @@ export default function Budgets() {
       <div className="flex h-fit items-center justify-between">
         <h2 className="text-primary text-xl font-bold">Budgets</h2>
         <Link
-          className="group hover:text-primary text-muted-foreground flex cursor-pointer items-center gap-3 text-sm capitalize transition-colors"
+          className="group hover:text-primary text-muted-foreground focus-visible:outline-primary flex cursor-pointer items-center gap-3 rounded-xs text-sm capitalize transition-colors focus-visible:outline-1"
           href="/budgets"
         >
           See details
@@ -26,7 +28,12 @@ export default function Budgets() {
         </Link>
       </div>
 
-      <ChartPieDonutText />
+      <div className="@container">
+        <Card className="flex flex-col items-center gap-0 p-0 @lg:flex-row">
+          <ChartPieDonutText />
+          <ChartSummary />
+        </Card>
+      </div>
     </div>
   );
 }

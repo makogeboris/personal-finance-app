@@ -6,7 +6,7 @@ export default function RecurringBills() {
       <div className="flex items-center justify-between">
         <h2 className="text-primary text-xl font-bold">Recurring Bills</h2>
         <Link
-          className="group hover:text-primary text-muted-foreground flex items-center gap-3 text-sm capitalize transition-colors"
+          className="group hover:text-primary text-muted-foreground focus-visible:outline-primary flex items-center gap-3 rounded-xs text-sm capitalize transition-colors focus-visible:outline-1"
           href="/recurring-bills"
         >
           See details
