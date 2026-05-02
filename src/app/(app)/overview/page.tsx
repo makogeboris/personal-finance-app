@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 
 export default function Overview() {
   return (
-    <div>
+    <>
       <h1 className="text-primary text-32 font-bold">Overview</h1>
 
       <div className="grid-layout">
@@ -21,6 +21,6 @@ export default function Overview() {
         <Transactions />
         <RecurringBills />
       </div>
-    </div>
+    </>
   );
 }

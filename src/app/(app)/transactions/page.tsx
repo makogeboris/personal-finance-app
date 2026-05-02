@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 
 export default function Transactions() {
   return (
-    <div>
+    <>
       <h1 className="text-primary text-32 font-bold">Transactions</h1>
 
       <div className="bg-background rounded-12 mt-8 px-5 py-6 sm:p-8">
@@ -17,6 +17,6 @@ export default function Transactions() {
         <TransactionsTable />
         <TransactionsPagination />
       </div>
-    </div>
+    </>
   );
 }
