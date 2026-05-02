@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 export default function Budgets() {
   return (
-    <div>
+    <>
       <div className="flex items-center justify-between">
         <h1 className="text-primary text-32 font-bold">Budgets</h1>
 
@@ -18,15 +18,18 @@ export default function Budgets() {
       </div>
 
       <div className="mt-8 flex flex-col gap-6 lg:flex-row">
-        <div className="bg-background rounded-12 flex flex-col items-center p-5 lg:flex-row">
+        <div className="bg-background rounded-12 flex h-fit w-full flex-col items-center p-5 sm:flex-row lg:max-w-107 lg:flex-col">
           <ChartPieDonutText />
           <SpendingSummary />
         </div>
 
-        <div className="flex flex-col gap-6">
+        <div className="flex w-full flex-col gap-6">
+          <Budget />
+          <Budget />
+          <Budget />
           <Budget />
         </div>
       </div>
-    </div>
+    </>
   );
 }
