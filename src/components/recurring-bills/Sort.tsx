@@ -8,39 +8,54 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { FieldSeparator } from "../ui/field";
+
+const SORT_ITEMS = [
+  { label: "Latest", value: "latest" },
+  { label: "Oldest", value: "oldest" },
+  { label: "A to Z", value: "az" },
+  { label: "Z to A", value: "za" },
+  { label: "Highest", value: "highest" },
+  { label: "Lowest", value: "lowest" },
+];
 
 export function Sort() {
   return (
     <Select>
-      {/* Mobile: icon-only trigger */}
-      <SelectTrigger className="flex h-10 w-10 items-center justify-center p-0 md:hidden">
-        <Image
-          src="/icons/icon-sort-mobile.svg"
-          alt="Sort"
-          width={16}
-          height={16}
-          style={{ width: "auto", height: "auto" }}
-        />
-      </SelectTrigger>
-
-      {/* Desktop: full trigger */}
-      <div className="hidden w-full items-center gap-2 md:flex">
-        <span className="text-muted-foreground text-sm whitespace-nowrap">
+      <div className="w-full items-center gap-2 md:flex">
+        <span className="text-muted-foreground hidden text-sm whitespace-nowrap md:block">
           Sort by
         </span>
-        <SelectTrigger className="">
-          <SelectValue className="text-primary text-sm" placeholder="Latest" />
+        <SelectTrigger className="flex w-full items-center md:gap-2">
+          <Image
+            src="/icons/icon-sort-mobile.svg"
+            alt="Sort"
+            width={16}
+            height={16}
+            className="shrink-0 md:hidden"
+          />
+
+          <span className="hidden md:inline">
+            <SelectValue
+              className="text-primary text-sm"
+              placeholder="Latest"
+            />
+          </span>
         </SelectTrigger>
       </div>
 
       <SelectContent position="popper" side="bottom" sideOffset={4}>
         <SelectGroup>
-          <SelectLabel>Sort by</SelectLabel>
-          <SelectItem value="oldest">Oldest</SelectItem>
-          <SelectItem value="az">A → Z</SelectItem>
-          <SelectItem value="za">Z → A</SelectItem>
-          <SelectItem value="highest">Highest</SelectItem>
-          <SelectItem value="lowest">Lowest</SelectItem>
+          <SelectLabel className="sr-only">Sort by</SelectLabel>
+          {SORT_ITEMS.map((item, index) => (
+            <div key={item.value}>
+              <SelectItem value={item.value}>{item.label}</SelectItem>
+
+              {index !== SORT_ITEMS.length - 1 && (
+                <FieldSeparator className="-my-2" />
+              )}
+            </div>
+          ))}
         </SelectGroup>
       </SelectContent>
     </Select>

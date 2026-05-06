@@ -57,12 +57,15 @@ function PaginationLink({
       asChild
       // variant={isActive ? "outline" : "ghost"}
       size={size}
-      className={clsx(
-        "border-accent rounded-md border bg-transparent px-5 py-5 text-sm",
-        {
-          "bg-foreground text-background hover:bg-foreground": isActive,
-          "hover:bg-accent text-primary hover:text-background": !isActive,
-        },
+      className={cn(
+        clsx(
+          "border-accent rounded-md border bg-transparent px-4.75 py-4.75 text-sm",
+          {
+            "bg-foreground text-background hover:bg-foreground": isActive,
+            "hover:bg-accent text-primary hover:text-background": !isActive,
+          },
+        ),
+        className,
       )}
     >
       <a
@@ -77,20 +80,23 @@ function PaginationLink({
 
 function PaginationPrevious({
   className,
-  text = "Previous",
+  text = "Prev",
   ...props
 }: React.ComponentProps<typeof PaginationLink> & { text?: string }) {
   return (
     <PaginationLink
       aria-label="Go to previous page"
       size="default"
-      className={
-        "group border-accent flex items-center gap-3.5 rounded-md border px-4! py-5!"
-      }
+      className={cn(
+        "group border-accent flex items-center gap-3.5 rounded-md border px-4! py-4.75! transition-all",
+        className,
+      )}
       {...props}
     >
       <ChevronLeftIcon data-icon="inline-start" />
-      <span className="text-primary hidden text-sm sm:block">{text}</span>
+      <span className="text-primary group-hover:text-background hidden text-sm sm:block">
+        {text}
+      </span>
     </PaginationLink>
   );
 }
@@ -104,12 +110,15 @@ function PaginationNext({
     <PaginationLink
       aria-label="Go to next page"
       size="default"
-      className={
-        "border-accent flex items-center gap-3 rounded-md border px-4! py-5!"
-      }
+      className={cn(
+        "group border-accent flex items-center gap-3.5 rounded-md border px-4! py-4.75! transition-all",
+        className,
+      )}
       {...props}
     >
-      <span className="text-primary hidden text-sm sm:block">{text}</span>
+      <span className="text-primary group-hover:text-background hidden text-sm sm:block">
+        {text}
+      </span>
       <ChevronRightIcon data-icon="inline-end" />
     </PaginationLink>
   );
@@ -124,7 +133,7 @@ function PaginationEllipsis({
       aria-hidden
       data-slot="pagination-ellipsis"
       className={cn(
-        "border-accent text-primary flex size-10.5 items-center justify-center rounded-md border [&_svg:not([class*='size-'])]:size-4",
+        "border-accent text-primary flex size-10 items-center justify-center rounded-md border [&_svg:not([class*='size-'])]:size-4",
         className,
       )}
       {...props}

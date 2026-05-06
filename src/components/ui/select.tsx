@@ -5,6 +5,7 @@ import { Select as SelectPrimitive } from "radix-ui";
 
 import { cn } from "@/lib/utils";
 import { ChevronDownIcon, CheckIcon, ChevronUpIcon } from "lucide-react";
+import Image from "next/image";
 
 function Select({
   ...props
@@ -44,14 +45,20 @@ function SelectTrigger({
       data-slot="select-trigger"
       data-size={size}
       className={cn(
-        "md:border-accent focus-visible:border-primary focus-visible:ring-primary aria-invalid:border-destructive aria-invalid:ring-destructive/20 data-placeholder:text-primary flex w-fit items-center justify-between gap-4 rounded-md bg-transparent text-sm whitespace-nowrap transition-colors outline-none select-none focus-visible:ring-1 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:ring-3 data-[size=default]:h-8 data-[size=sm]:h-7 data-[size=sm]:rounded-[min(var(--radius-md),10px)] *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-1.5 md:border md:px-5 md:py-5.5 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+        "md:border-accent group md:focus-visible:border-primary md:focus-visible:ring-primary aria-invalid:border-destructive aria-invalid:ring-destructive/20 data-placeholder:text-primary flex w-fit cursor-pointer items-center justify-between gap-4 rounded-md bg-transparent text-sm whitespace-nowrap transition-colors outline-none select-none disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:ring-3 data-[size=default]:h-8 data-[size=sm]:h-7 data-[size=sm]:rounded-[min(var(--radius-md),10px)] *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-1.5 md:border md:px-5 md:py-5.5 md:focus-visible:ring-1 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
         className,
       )}
       {...props}
     >
       {children}
       <SelectPrimitive.Icon asChild>
-        <ChevronDownIcon className="text-primary pointer-events-none hidden size-4 font-bold md:block" />
+        <Image
+          className="hidden transition-transform duration-200 group-data-[state=open]:rotate-180 md:block"
+          width={12}
+          height={12}
+          alt=""
+          src="/icons/icon-caret-down.svg"
+        />
       </SelectPrimitive.Icon>
     </SelectPrimitive.Trigger>
   );
@@ -117,7 +124,7 @@ function SelectItem({
     <SelectPrimitive.Item
       data-slot="select-item"
       className={cn(
-        "focus:bg-accent focus:text-accent-foreground not-data-[variant=destructive]:focus:**:text-accent-foreground relative flex w-full cursor-default items-center gap-1.5 rounded-md py-1 pr-8 pl-1.5 text-sm outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:flex *:[span]:last:items-center *:[span]:last:gap-2",
+        "focus:bg-ring/20 text-primary relative flex w-full cursor-pointer items-center gap-1.5 rounded-md py-3 pr-8 pl-1.5 text-sm outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:flex *:[span]:last:items-center *:[span]:last:gap-2",
         className,
       )}
       {...props}
@@ -126,6 +133,40 @@ function SelectItem({
         <SelectPrimitive.ItemIndicator>
           <CheckIcon className="pointer-events-none" />
         </SelectPrimitive.ItemIndicator>
+      </span>
+      <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
+    </SelectPrimitive.Item>
+  );
+}
+
+function SelectItemColor({
+  className,
+  children,
+  isUsed,
+  ...props
+}: React.ComponentProps<typeof SelectPrimitive.Item> & {
+  isUsed?: boolean;
+}) {
+  return (
+    <SelectPrimitive.Item
+      disabled={isUsed}
+      data-slot="select-item"
+      className={cn(
+        "focus:bg-ring/20 text-primary relative flex w-full cursor-pointer items-center gap-1.5 rounded-md py-3 pr-8 pl-1.5 text-sm outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:flex *:[span]:last:items-center *:[span]:last:gap-2",
+        "data-disabled:pointer-events-none data-disabled:opacity-50",
+        className,
+      )}
+      {...props}
+    >
+      <span className="pointer-events-none absolute right-2 flex size-4 items-center justify-center">
+        <SelectPrimitive.ItemIndicator>
+          <CheckIcon className="pointer-events-none" />
+        </SelectPrimitive.ItemIndicator>
+        {isUsed && (
+          <span className="text-muted-foreground absolute right-6 text-xs whitespace-nowrap">
+            Already used
+          </span>
+        )}
       </span>
       <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
     </SelectPrimitive.Item>
@@ -186,6 +227,7 @@ export {
   SelectContent,
   SelectGroup,
   SelectItem,
+  SelectItemColor,
   SelectLabel,
   SelectScrollDownButton,
   SelectScrollUpButton,

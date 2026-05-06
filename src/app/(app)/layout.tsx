@@ -15,3 +15,8 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
     </div>
   );
 }
+
+// *! CREATE NEW BRANCH BEFORE
+// *! CREATE NEW BRANCH BEFORE
+// *! CREATE NEW BRANCH BEFORE
+// *! CREATE NEW BRANCH BEFORE

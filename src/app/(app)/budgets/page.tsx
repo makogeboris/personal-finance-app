@@ -1,20 +1,69 @@
-import Budget from "@/components/budgets/Budget";
-import { ChartPieDonutText } from "@/components/budgets/Chart";
-import SpendingSummary from "@/components/budgets/SpendingSummary";
-import { Button } from "@/components/ui/button";
 import type { Metadata } from "next";
+import Budget from "@/components/budgets/Budget";
+import SpendingSummary from "@/components/budgets/SpendingSummary";
+import { ChartPieDonutText } from "@/components/budgets/Chart";
+import { AddNewBudget } from "@/components/budgets/AddNewBudget";
 
 export const metadata: Metadata = {
   title: "Budgets",
 };
 
+type BudgetType = {
+  id: string;
+  name: string;
+  maximum: number;
+  spent: number;
+  remaining: number;
+  theme: string;
+};
+
+const budgets: BudgetType[] = [
+  {
+    id: "1",
+    name: "Entertainment",
+    maximum: 159,
+    spent: 23,
+    remaining: 45,
+    theme: "var(--color-green)",
+  },
+  {
+    id: "2",
+    name: "Bills",
+    maximum: 150,
+    spent: 23,
+    remaining: 45,
+    theme: "var(--color-navy)",
+  },
+  {
+    id: "3",
+    name: "Dining Out",
+    maximum: 40,
+    spent: 23,
+    remaining: 45,
+    theme: "var(--color-cyan)",
+  },
+  {
+    id: "4",
+    name: "Personal Care",
+    maximum: 10,
+    spent: 23,
+    remaining: 45,
+    theme: "var(--color-yellow)",
+  },
+];
+
 export default function Budgets() {
   return (
     <>
       <div className="flex items-center justify-between">
-        <h1 className="text-primary text-32 font-bold">Budgets</h1>
+        <div className="flex flex-col">
+          <h1 className="text-primary text-32 font-bold">Budgets</h1>
+          <p className="text-muted-foreground xs:block hidden text-sm">
+            Set limits and stay on top of your spending.
+          </p>
+        </div>
 
-        <Button>+ Add New Budget</Button>
+        <AddNewBudget />
       </div>
 
       <div className="mt-8 flex flex-col gap-6 lg:flex-row">
@@ -24,10 +73,9 @@ export default function Budgets() {
         </div>
 
         <div className="flex w-full flex-col gap-6">
-          <Budget />
-          <Budget />
-          <Budget />
-          <Budget />
+          {budgets.map((budget) => (
+            <Budget key={budget.id} {...budget} />
+          ))}
         </div>
       </div>
     </>

@@ -12,7 +12,12 @@ export const metadata: Metadata = {
 export default function Overview() {
   return (
     <>
-      <h1 className="text-primary text-32 font-bold">Overview</h1>
+      <div className="flex flex-col">
+        <h1 className="text-primary text-32 font-bold">Overview</h1>
+        <p className="text-muted-foreground text-sm">
+          Your financial snapshot at a glance.
+        </p>
+      </div>
 
       <div className="grid-layout">
         <Summary />
