@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 export default function Page() {
   return (
     <>
-      <div className="flex flex-col gap-1">
+      <div className="flex flex-col">
         <h1 className="text-primary text-32 font-bold">Profile</h1>
         <p className="text-muted-foreground text-sm">
           Manage your account details and preferences.

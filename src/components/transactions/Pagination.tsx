@@ -13,7 +13,10 @@ export function TransactionsPagination() {
     <Pagination className="mt-12">
       <PaginationContent>
         <PaginationItem>
-          <PaginationPrevious className="" href="#" />
+          <PaginationPrevious
+            className="group-hover:text-background"
+            href="#"
+          />
         </PaginationItem>
 
         <div className="flex items-center gap-2">

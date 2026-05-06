@@ -26,7 +26,7 @@ export default function TransationControls() {
         />
       </form>
 
-      <div className="flex items-center gap-1 md:gap-6">
+      <div className="flex items-center gap-6">
         <Sort />
         <Filter />
       </div>
