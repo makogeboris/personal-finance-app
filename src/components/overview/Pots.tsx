@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export default function Pots() {
   return (
-    <div className="area-pots bg-background rounded-12 grid grid-cols-1 gap-5 px-5 py-6 sm:p-8">
+    <div className="area-pots bg-background rounded-12 grid min-h-54.5 grid-cols-1 gap-5 px-5 py-6 sm:p-8">
       <div className="flex items-center justify-between">
         <h2 className="text-primary text-xl font-bold">Pots</h2>
         <Link
@@ -84,6 +84,20 @@ export default function Pots() {
           </div>
         </div>
       </div>
+
+      {/* <div className="flex flex-col items-center gap-4 text-center">
+        <div className="bg-sidebar-accent grid size-14 place-items-center rounded-full">
+          <Image width={24} height={24} src="/icons/icon-nav-pots.svg" alt="" />
+        </div>
+
+        <div className="flex flex-col gap-1">
+          <h3 className="text-primary text-base font-bold">No pots yet</h3>
+          <p className="text-muted-foreground text-sm">
+            Create a pot to start saving for specific goals like travel,
+            gadgets, or emergencies.
+          </p>
+        </div>
+      </div> */}
     </div>
   );
 }

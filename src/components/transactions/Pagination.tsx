@@ -10,7 +10,7 @@ import {
 
 export function TransactionsPagination() {
   return (
-    <Pagination className="mt-12">
+    <Pagination>
       <PaginationContent>
         <PaginationItem>
           <PaginationPrevious
