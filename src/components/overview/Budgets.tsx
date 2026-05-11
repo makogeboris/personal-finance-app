@@ -2,10 +2,12 @@ import Link from "next/link";
 import { ChartPieDonutText } from "../budgets/Chart";
 import { Card } from "../ui/card";
 import ChartSummary from "../budgets/ChartSummary";
+import Image from "next/image";
 
 export default function Budgets() {
+  // min-h-102.5
   return (
-    <div className="area-budgets bg-background rounded-radius-12 grid grid-cols-1 px-5 py-6 sm:p-8">
+    <div className="area-budgets bg-background rounded-12 grid grid-cols-1 px-5 py-6 sm:p-8">
       <div className="flex h-fit items-center justify-between">
         <h2 className="text-primary text-xl font-bold">Budgets</h2>
         <Link
@@ -34,6 +36,27 @@ export default function Budgets() {
           <ChartSummary />
         </Card>
       </div>
+
+      {/* <div className="mt-5 flex flex-col items-center gap-4 text-center lg:mt-0">
+        <div className="bg-sidebar-accent grid size-14 place-items-center rounded-full">
+          <Image
+            width={24}
+            height={24}
+            src="/icons/icon-nav-budgets.svg"
+            alt=""
+          />
+        </div>
+
+        <div className="flex flex-col gap-1">
+          <h3 className="text-primary text-base font-bold">
+            No budgets created
+          </h3>
+          <p className="text-muted-foreground text-sm">
+            Set a budget to keep track of your spending and stay in control of
+            your finances.
+          </p>
+        </div>
+      </div> */}
     </div>
   );
 }

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { AddNewPot } from "@/components/Pots/AddNewPot";
 import Pot from "@/components/Pots/Pot";
+import Image from "next/image";
 
 export const metadata: Metadata = {
   title: "Pots",
@@ -71,6 +72,20 @@ export default function Pots() {
           <Pot key={pot.id} {...pot} />
         ))}
       </div>
+
+      {/* <div className="bg-background rounded-12 mt-8 flex flex-col items-center gap-4 p-4 py-14 text-center">
+        <div className="bg-sidebar-accent grid size-14 place-items-center rounded-full">
+          <Image width={24} height={24} src="/icons/icon-nav-pots.svg" alt="" />
+        </div>
+
+        <div className="flex flex-col gap-1">
+          <h3 className="text-primary text-base font-bold">No pots yet</h3>
+          <p className="text-muted-foreground text-sm">
+            Create a pot to start saving for specific goals like travel,
+            gadgets, or emergencies.
+          </p>
+        </div>
+      </div> */}
     </>
   );
 }

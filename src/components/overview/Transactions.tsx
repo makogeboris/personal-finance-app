@@ -10,6 +10,7 @@ import {
 import Image from "next/image";
 
 export default function Transactions() {
+  // min-h-129
   return (
     <div className="area-transactions bg-background rounded-12 grid grid-cols-1 gap-5.5 px-5 py-6 sm:p-8">
       <div className="flex h-fit items-center justify-between">
@@ -135,6 +136,27 @@ export default function Transactions() {
           </TableRow>
         </TableBody>
       </Table>
+
+      {/* <div className="flex flex-col items-center gap-4 text-center">
+        <div className="bg-sidebar-accent grid size-14 place-items-center rounded-full">
+          <Image
+            width={24}
+            height={24}
+            src="/icons/icon-nav-transactions.svg"
+            alt=""
+          />
+        </div>
+
+        <div className="flex flex-col gap-1">
+          <h3 className="text-primary text-base font-bold">
+            No transactions found
+          </h3>
+          <p className="text-muted-foreground text-sm">
+            Your recent income and expenses will appear here once activity is
+            recorded.
+          </p>
+        </div>
+      </div> */}
     </div>
   );
 }

@@ -1,8 +1,9 @@
+import Image from "next/image";
 import Link from "next/link";
 
 export default function RecurringBills() {
   return (
-    <div className="area-bills bg-background rounded-12 grid grid-cols-1 gap-8 px-5 py-6 sm:p-8">
+    <div className="area-bills bg-background rounded-12 grid min-h-81 grid-cols-1 gap-8 px-5 py-6 sm:p-8">
       <div className="flex items-center justify-between">
         <h2 className="text-primary text-xl font-bold">Recurring Bills</h2>
         <Link
@@ -41,6 +42,27 @@ export default function RecurringBills() {
           <span className="text-primary text-sm font-bold">$59.98</span>
         </div>
       </div>
+
+      {/* <div className="flex flex-col items-center gap-4 text-center">
+        <div className="bg-sidebar-accent grid size-14 place-items-center rounded-full">
+          <Image
+            width={24}
+            height={24}
+            src="/icons/icon-nav-recurring-bills.svg"
+            alt=""
+          />
+        </div>
+
+        <div className="flex flex-col gap-1">
+          <h3 className="text-primary text-base font-bold">
+            No recurring bills
+          </h3>
+          <p className="text-muted-foreground text-sm">
+            Add recurring bills to stay on top of upcoming payments and
+            subscriptions.
+          </p>
+        </div>
+      </div> */}
     </div>
   );
 }
