@@ -9,6 +9,9 @@ export const metadata: Metadata = {
   },
   description:
     "Take control of your money. Track transactions, manage budgets, monitor savings pots, and stay on top of recurring bills — all in one place.",
+  appleWebApp: {
+    title: "Personal Finance",
+  },
 };
 
 export default function RootLayout({
