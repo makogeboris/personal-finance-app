@@ -1,6 +1,6 @@
-import Summary from "@/components/recurring-bills/Summary";
-import { RecurringBillsTable } from "@/components/recurring-bills/Table";
 import type { Metadata } from "next";
+import { RecurringBillsSummary } from "@/components/recurring-bills/Summary";
+import { RecurringBillsTable } from "@/components/recurring-bills/Table";
 
 export const metadata: Metadata = {
   title: "Recurring Bills",
@@ -17,7 +17,7 @@ export default function RecurringBills() {
       </div>
 
       <div className="mt-8 flex w-full flex-col gap-6 lg:flex-row">
-        <Summary />
+        <RecurringBillsSummary />
         <RecurringBillsTable />
       </div>
     </>

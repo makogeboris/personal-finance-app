@@ -137,6 +137,7 @@ export default function Transactions() {
         </TableBody>
       </Table>
 
+      {/* Empty state */}
       {/* <div className="flex flex-col items-center gap-4 text-center">
         <div className="bg-sidebar-accent grid size-14 place-items-center rounded-full">
           <Image
