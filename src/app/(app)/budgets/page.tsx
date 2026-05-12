@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Budget from "@/components/budgets/Budget";
 import SpendingSummary from "@/components/budgets/SpendingSummary";
 import { ChartPieDonutText } from "@/components/budgets/Chart";
 import { AddNewBudget } from "@/components/budgets/AddNewBudget";
-import Image from "next/image";
 
 export const metadata: Metadata = {
   title: "Budgets",

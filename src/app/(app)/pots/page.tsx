@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { AddNewPot } from "@/components/Pots/AddNewPot";
 import Pot from "@/components/Pots/Pot";
-import Image from "next/image";
 
 export const metadata: Metadata = {
   title: "Pots",

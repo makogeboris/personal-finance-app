@@ -1,11 +1,14 @@
 import type { Metadata } from "next";
 import { LoginForm } from "@/components/auth/LoginForm";
+import { sleep } from "@/lib/utils";
 
 export const metadata: Metadata = {
   title: "Login",
 };
 
-export default function LoginPage() {
+export default async function LoginPage() {
+  await sleep(1000);
+
   return (
     <div className="flex min-h-[85svh] w-full flex-col items-center justify-center p-6 lg:min-h-svh lg:p-10">
       <div className="w-full max-w-lg lg:max-w-4xl">
