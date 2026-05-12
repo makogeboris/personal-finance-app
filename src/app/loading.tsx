@@ -1,4 +1,4 @@
-export default function AuthLoading() {
+export default function Loading() {
   return (
     <div className="bg-secondary flex min-h-screen items-center justify-center">
       <svg
