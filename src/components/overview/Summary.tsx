@@ -4,16 +4,16 @@ export default function Summary() {
       <div className="bg-foreground rounded-12 flex w-full flex-col items-start gap-2 p-5 sm:p-6">
         <h2 className="text-primary-foreground text-sm">Current Balance</h2>
         <p className="text-primary-foreground text-32 leading-[1.2] font-bold">
-          $0.00
+          $4836.00
         </p>
       </div>
       <div className="bg-background rounded-12 flex w-full flex-col items-start gap-2 p-5 sm:p-6">
         <h2 className="text-muted-foreground text-sm">Income</h2>
-        <p className="text-primary text-32 leading-[1.2] font-bold">$0.00</p>
+        <p className="text-primary text-32 leading-[1.2] font-bold">$3814.25</p>
       </div>
       <div className="bg-background rounded-12 flex w-full flex-col items-start gap-2 p-5 sm:p-6">
         <h2 className="text-muted-foreground text-sm">Expenses</h2>
-        <p className="text-primary text-32 leading-[1.2] font-bold">$0.00</p>
+        <p className="text-primary text-32 leading-[1.2] font-bold">$1700.50</p>
       </div>
     </div>
   );

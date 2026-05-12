@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { FieldSeparator } from "../ui/field";
 
-export default function Summary() {
+export function RecurringBillsSummary() {
   return (
     <div className="flex w-full flex-col gap-3 sm:flex-row sm:gap-6 lg:max-w-84 lg:flex-col">
       <div className="bg-foreground rounded-12 flex w-full gap-5 p-6 sm:flex-col sm:gap-8">
