@@ -1,7 +1,7 @@
-import TransationControls from "@/components/transactions/Controls";
-import { TransactionsTable } from "@/components/transactions/Table";
 import type { Metadata } from "next";
 import Image from "next/image";
+import TransationControls from "@/components/transactions/Controls";
+import { TransactionsTable } from "@/components/transactions/Table";
 
 export const metadata: Metadata = {
   title: "Transactions",
