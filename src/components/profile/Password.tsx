@@ -67,7 +67,7 @@ export default function Password() {
           Your password has been updated successfully.
         </p>
       ) : (
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form className="grid gap-4" onSubmit={handleSubmit(onSubmit)}>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <Field className="flex flex-col gap-1 sm:col-span-2">
               <FieldLabel htmlFor="currentPassword">
@@ -115,7 +115,7 @@ export default function Password() {
           </div>
 
           <div className="flex justify-end">
-            <Button type="submit" disabled={isSubmitting}>
+            <Button size="lg" type="submit" disabled={isSubmitting}>
               {isSubmitting ? "Updating..." : "Update Password"}
             </Button>
           </div>
