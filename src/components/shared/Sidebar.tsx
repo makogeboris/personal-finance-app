@@ -159,8 +159,11 @@ export function BottomNav() {
   const allItems = [...navItems, profileItem];
 
   return (
-    <nav className="bg-primary fixed right-0 bottom-0 left-0 z-50 rounded-t-md px-4 pt-2 md:px-10 lg:hidden">
-      <div className="flex items-end justify-between">
+    <nav
+      style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
+      className="bg-primary fixed right-0 bottom-0 left-0 z-50 rounded-t-md px-4 pt-2 md:px-10 lg:hidden"
+    >
+      <div className="flex items-end justify-between gap-1">
         {allItems.map((item) => {
           const active = pathname === item.href;
 
@@ -169,7 +172,7 @@ export function BottomNav() {
               key={item.href}
               href={item.href}
               className={clsx(
-                "group h-fill-available flex w-full flex-col items-center justify-center gap-1 rounded-t-md border-b-4 py-2",
+                "group flex min-h-11 w-full flex-col items-center justify-center gap-1 rounded-t-md border-b-4 sm:min-h-16.5",
                 active
                   ? "bg-secondary text-primary border-chart-1"
                   : "text-ring hover:bg-background/10 hover:text-background border-transparent",
