@@ -30,24 +30,11 @@ const emailSchema = z.object({
 type nameValues = z.infer<typeof nameSchema>;
 type emailValues = z.infer<typeof emailSchema>;
 
-export function Identity() {
+export default function Identity() {
   return (
-    <div className="bg-background rounded-12 flex h-fit flex-col items-center gap-4 p-6 text-center sm:flex-row sm:gap-5 sm:p-8 sm:text-left lg:flex-col lg:items-center lg:text-center xl:flex-row xl:items-start xl:text-left">
-      <Avatar name="Lenny Smith" />
-      <div className="flex flex-col gap-1">
-        <p className="text-foreground text-xl leading-tight font-bold tracking-tight">
-          Lenny Smith
-        </p>
-        <p className="text-muted-foreground text-sm">lenny@example.com</p>
-        <div className="mt-2">
-          <span className="bg-chart-1/15 text-chart-1 rounded-full px-2.5 py-1 text-xs font-bold tracking-wider uppercase">
-            Active
-          </span>
-        </div>
-        <p className="text-muted-foreground mt-1 text-xs">
-          Member since August 2024
-        </p>
-      </div>
+    <div className="bg-background rounded-12 flex h-fit flex-col gap-5 p-6 sm:p-8">
+      <Name />
+      <Email />
     </div>
   );
 }
@@ -69,10 +56,7 @@ export function Name({ className, ...props }: React.ComponentProps<"div">) {
   };
 
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className="bg-background rounded-12 flex h-fit flex-col gap-5 p-6 sm:p-8"
-    >
+    <form onSubmit={handleSubmit(onSubmit)} className="grid gap-4">
       <div className="flex items-start justify-between">
         <div>
           <h2 className="text-primary text-xl font-bold">Full Name</h2>
@@ -95,7 +79,7 @@ export function Name({ className, ...props }: React.ComponentProps<"div">) {
       </Field>
 
       <div className="flex justify-end">
-        <Button type="submit" disabled={isSubmitting}>
+        <Button size="lg" type="submit" disabled={isSubmitting}>
           {isSubmitting ? "Saving..." : "Save Name"}
         </Button>
       </div>
@@ -119,10 +103,7 @@ export function Email({ className, ...props }: React.ComponentProps<"div">) {
     console.log(data);
   };
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className="bg-background rounded-12 flex h-fit flex-col gap-5 p-6 sm:p-8"
-    >
+    <form className="grid gap-4" onSubmit={handleSubmit(onSubmit)}>
       <div className="flex items-start justify-between">
         <div>
           <h2 className="text-primary text-xl font-bold">Email Address</h2>
@@ -145,24 +126,10 @@ export function Email({ className, ...props }: React.ComponentProps<"div">) {
       </Field>
 
       <div className="flex justify-end">
-        <Button type="submit" disabled={isSubmitting}>
+        <Button size="lg" type="submit" disabled={isSubmitting}>
           {isSubmitting ? "Saving..." : "Save Email"}
         </Button>
       </div>
     </form>
-  );
-}
-
-function Avatar({ name }: { name: string }) {
-  const initials = name
-    .split(" ")
-    .map((n) => n[0])
-    .join("")
-    .toUpperCase()
-    .slice(0, 2);
-  return (
-    <div className="bg-primary text-primary-foreground flex h-16 w-16 shrink-0 items-center justify-center rounded-full text-xl font-extrabold tracking-tight sm:h-20 sm:w-20 sm:text-2xl">
-      {initials}
-    </div>
   );
 }
