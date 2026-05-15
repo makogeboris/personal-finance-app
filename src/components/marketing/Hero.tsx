@@ -27,7 +27,7 @@ export default function Hero() {
           </Link>
 
           <Link
-            href="/demo"
+            href="/login?demo=true"
             className="border-accent focus-visible:outline-primary/90 hover:border-chart-1 hover:text-chart-1 transform rounded-full border px-8 py-3 text-sm font-semibold transition hover:-translate-y-0.5 focus-visible:outline-2"
           >
             Try the demo
