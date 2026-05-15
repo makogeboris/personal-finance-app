@@ -45,3 +45,44 @@ export async function signOutAction() {
   await supabase.auth.signOut();
   redirect("/login");
 }
+
+export async function forgotPasswordAction(data: { email: string }) {
+  const supabase = await createClient();
+
+  const { error } = await supabase.auth.resetPasswordForEmail(data.email, {
+    redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/reset-password`,
+  });
+
+  if (error) console.error(error);
+
+  return { success: true };
+}
+
+export async function resetPasswordAction(data: { password: string }) {
+  const supabase = await createClient();
+
+  const { error } = await supabase.auth.updateUser({
+    password: data.password,
+  });
+
+  if (error) {
+    return { error: error.message };
+  }
+
+  return { success: true };
+}
+
+export async function demoLoginAction() {
+  const supabase = await createClient();
+
+  const { error } = await supabase.auth.signInWithPassword({
+    email: process.env.DEMO_USER_EMAIL!,
+    password: process.env.DEMO_USER_PASSWORD!,
+  });
+
+  if (error) {
+    return { error: error.message };
+  }
+
+  redirect("/overview");
+}

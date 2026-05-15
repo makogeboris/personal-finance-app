@@ -25,7 +25,7 @@ export default function Footer() {
           </Link>
 
           <Link
-            href="/demo"
+            href="/login?demo=true"
             className="bg-chart-1 text-background rounded-full px-8 py-3 text-sm font-semibold transition hover:opacity-90"
           >
             Explore the demo

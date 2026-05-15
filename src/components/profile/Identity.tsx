@@ -4,7 +4,7 @@ import { Button } from "../ui/button";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Field, FieldError, FieldLabel } from "../ui/field";
+import { Field, FieldError, FieldLabel, FieldSeparator } from "../ui/field";
 import { Input } from "../ui/input";
 
 const nameSchema = z.object({
@@ -34,6 +34,7 @@ export default function Identity() {
   return (
     <div className="bg-background rounded-12 flex h-fit flex-col gap-5 p-6 sm:p-8">
       <Name />
+      <FieldSeparator />
       <Email />
     </div>
   );

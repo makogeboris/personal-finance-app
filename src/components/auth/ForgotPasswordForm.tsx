@@ -16,6 +16,7 @@ import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { forgotPasswordAction } from "@/actions/auth";
 
 const forgotPasswordSchema = z.object({
   email: z
@@ -41,8 +42,7 @@ export function ForgotPasswordForm({
   });
 
   const onSubmit = async (data: ForgotPasswordFormValues) => {
-    // Call API to send the reset email
-    console.log(data);
+    await forgotPasswordAction(data);
   };
 
   return (

@@ -18,7 +18,7 @@ import PasswordInput from "./PasswordInput";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { loginAction } from "@/actions/auth";
+import { loginAction, demoLoginAction } from "@/actions/auth";
 
 const loginSchema = z.object({
   email: z
@@ -35,6 +35,8 @@ export function LoginForm({
   ...props
 }: React.ComponentProps<"div">) {
   const [serverError, setServerError] = useState<string | null>(null);
+  const [demoLoading, setDemoLoading] = useState(false);
+  const [demoError, setDemoError] = useState<string | null>(null);
 
   const {
     register,
@@ -49,9 +51,18 @@ export function LoginForm({
   const onSubmit = async (data: LoginFormValues) => {
     setServerError(null);
     const result = await loginAction(data);
-
     if (result?.error) {
       setServerError(result.error);
+    }
+  };
+
+  const handleDemo = async () => {
+    setDemoLoading(true);
+    setDemoError(null);
+    const result = await demoLoginAction();
+    if (result?.error) {
+      setDemoError(result.error);
+      setDemoLoading(false);
     }
   };
 
@@ -113,7 +124,7 @@ export function LoginForm({
               </div>
 
               <Field>
-                <Button type="submit" disabled={isSubmitting}>
+                <Button type="submit" disabled={isSubmitting || demoLoading}>
                   {isSubmitting ? "Logging in..." : "Login"}
                 </Button>
               </Field>
@@ -124,6 +135,32 @@ export function LoginForm({
                   Sign up
                 </Link>
               </FieldDescription>
+
+              <div className="relative">
+                <div className="absolute inset-0 flex items-center">
+                  <span className="border-border w-full border-t" />
+                </div>
+                <div className="relative flex justify-center">
+                  <span className="bg-card text-muted-foreground px-3 text-sm">
+                    or
+                  </span>
+                </div>
+              </div>
+
+              {/* Demo login */}
+              <div className="flex flex-col items-center gap-2">
+                <button
+                  type="button"
+                  onClick={handleDemo}
+                  disabled={demoLoading || isSubmitting}
+                  className="border-accent focus-visible:outline-primary/90 hover:border-chart-1 hover:text-chart-1 w-full transform cursor-pointer rounded-lg border px-8 py-3 text-sm font-semibold transition focus-visible:outline-2 disabled:opacity-50"
+                >
+                  {demoLoading ? "Loading demo..." : "Try the demo"}
+                </button>
+                {demoError && (
+                  <p className="text-destructive text-xs">{demoError}</p>
+                )}
+              </div>
             </FieldGroup>
           </form>
 

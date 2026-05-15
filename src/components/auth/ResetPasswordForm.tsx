@@ -16,7 +16,8 @@ import PasswordInput from "./PasswordInput";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { useSearchParams } from "next/navigation";
+import { useState } from "react";
+import { resetPasswordAction } from "@/actions/auth";
 
 const resetPasswordSchema = z
   .object({
@@ -39,8 +40,7 @@ export function ResetPasswordForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
-  const searchParams = useSearchParams();
-  const token = searchParams.get("token");
+  const [serverError, setServerError] = useState<string | null>(null);
 
   const {
     register,
@@ -53,8 +53,11 @@ export function ResetPasswordForm({
   });
 
   const onSubmit = async (data: ResetPasswordFormValues) => {
-    // Call API with the token and new password
-    console.log({ token, password: data.password });
+    setServerError(null);
+    const result = await resetPasswordAction({ password: data.password });
+    if (result?.error) {
+      setServerError(result.error);
+    }
   };
 
   return (
@@ -72,7 +75,13 @@ export function ResetPasswordForm({
                 </p>
               </div>
 
-              {isSubmitSuccessful ? (
+              {serverError && (
+                <div className="bg-destructive/10 text-destructive rounded-lg px-4 py-3 text-sm font-medium">
+                  {serverError}
+                </div>
+              )}
+
+              {isSubmitSuccessful && !serverError ? (
                 <div className="bg-muted text-muted-foreground rounded-md p-4 text-center text-sm">
                   Your password has been reset.{" "}
                   <Link className="text-foreground font-bold" href="/login">
@@ -117,7 +126,7 @@ export function ResetPasswordForm({
 
               {!isSubmitSuccessful && (
                 <Field>
-                  <Button type="submit" disabled={isSubmitting || !token}>
+                  <Button type="submit" disabled={isSubmitting}>
                     {isSubmitting ? "Resetting password..." : "Reset Password"}
                   </Button>
                 </Field>
