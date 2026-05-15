@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -17,6 +18,7 @@ import PasswordInput from "./PasswordInput";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { loginAction } from "@/actions/auth";
 
 const loginSchema = z.object({
   email: z
@@ -32,6 +34,8 @@ export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
+  const [serverError, setServerError] = useState<string | null>(null);
+
   const {
     register,
     handleSubmit,
@@ -43,8 +47,12 @@ export function LoginForm({
   });
 
   const onSubmit = async (data: LoginFormValues) => {
-    // Handle login submission
-    console.log(data);
+    setServerError(null);
+    const result = await loginAction(data);
+
+    if (result?.error) {
+      setServerError(result.error);
+    }
   };
 
   return (
@@ -61,6 +69,12 @@ export function LoginForm({
                   Login to your account
                 </p>
               </div>
+
+              {serverError && (
+                <div className="bg-destructive/10 text-destructive rounded-lg px-4 py-3 text-sm font-medium">
+                  {serverError}
+                </div>
+              )}
 
               <div className="space-y-4">
                 <Field className="gap-1">

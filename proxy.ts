@@ -25,12 +25,10 @@ export async function proxy(request: NextRequest) {
     },
   );
 
-  // Refresh session — do not remove this
   const {
     data: { user },
   } = await supabase.auth.getUser();
 
-  // Protect app routes — redirect to login if not authenticated
   const appRoutes = [
     "/overview",
     "/transactions",
@@ -48,7 +46,6 @@ export async function proxy(request: NextRequest) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
 
-  // Redirect authenticated users away from auth pages
   const authRoutes = ["/login", "/signup"];
   const isAuthRoute = authRoutes.includes(request.nextUrl.pathname);
 
