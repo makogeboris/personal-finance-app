@@ -1,4 +1,3 @@
-import Image from "next/image";
 import {
   Select,
   SelectContent,
@@ -9,6 +8,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { FieldSeparator } from "../ui/field";
+import { NavIcons } from "../shared/NavIcons";
 
 const SORT_ITEMS = [
   { label: "Latest", value: "latest" },
@@ -27,13 +27,7 @@ export function Sort() {
           Sort by
         </span>
         <SelectTrigger className="flex w-full items-center md:gap-2">
-          <Image
-            src="/icons/icon-sort-mobile.svg"
-            alt="Sort"
-            width={16}
-            height={16}
-            className="shrink-0 md:hidden"
-          />
+          <span className="md:hidden">{NavIcons.sort}</span>
 
           <span className="hidden md:inline">
             <SelectValue

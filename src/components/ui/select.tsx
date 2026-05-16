@@ -53,7 +53,7 @@ function SelectTrigger({
       {children}
       <SelectPrimitive.Icon asChild>
         <Image
-          className="hidden transition-transform duration-200 group-data-[state=open]:rotate-180 md:block"
+          className="hidden h-3 w-3 transition-transform duration-200 group-data-[state=open]:rotate-180 md:block"
           width={12}
           height={12}
           alt=""

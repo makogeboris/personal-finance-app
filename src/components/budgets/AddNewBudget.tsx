@@ -4,7 +4,6 @@ import Image from "next/image";
 import { useState } from "react";
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -18,7 +17,6 @@ import {
   SelectGroup,
   SelectItem,
   SelectItemColor,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
@@ -104,7 +102,7 @@ export function AddNewBudget() {
                 <SelectTrigger className="border-accent w-full border px-5 py-5.5">
                   <SelectValue placeholder="Select a category" />
                   <Image
-                    className="transition-transform duration-200 group-data-[state=open]:rotate-180 md:hidden"
+                    className="h-3 w-3 transition-transform duration-200 group-data-[state=open]:rotate-180 md:hidden"
                     width={12}
                     height={12}
                     alt=""
@@ -175,7 +173,7 @@ export function AddNewBudget() {
                 <SelectTrigger className="border-accent w-full border px-5 py-5.5">
                   <SelectValue placeholder="Select a color" />
                   <Image
-                    className="transition-transform duration-200 group-data-[state=open]:rotate-180 md:hidden"
+                    className="h-3 w-3 transition-transform duration-200 group-data-[state=open]:rotate-180 md:hidden"
                     width={12}
                     height={12}
                     alt=""

@@ -6,6 +6,7 @@ export function RecurringBillsSummary() {
     <div className="flex w-full flex-col gap-3 sm:flex-row sm:gap-6 lg:max-w-84 lg:flex-col">
       <div className="bg-foreground rounded-12 flex w-full gap-5 p-6 sm:flex-col sm:gap-8">
         <Image
+          className="h-8 w-8"
           width={31}
           height={31}
           alt=""

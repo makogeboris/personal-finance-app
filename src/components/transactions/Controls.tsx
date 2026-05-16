@@ -1,7 +1,17 @@
+"use client";
+
 import Image from "next/image";
 import { Filter, Sort } from "./Select";
+import { useQueryStates, parseAsString, parseAsInteger } from "nuqs";
 
-export default function TransationControls() {
+export default function TransactionControls() {
+  const [{ search }, setParams] = useQueryStates({
+    search: parseAsString.withDefault(""),
+    category: parseAsString.withDefault("All"),
+    sort: parseAsString.withDefault("latest"),
+    page: parseAsInteger.withDefault(1),
+  });
+
   return (
     <div className="flex items-center justify-between gap-6">
       <form id="form" action="#" className="relative w-full max-w-[320px]">
@@ -14,6 +24,10 @@ export default function TransationControls() {
           type="search"
           name="search"
           placeholder="Search transaction"
+          value={search}
+          onChange={(e) =>
+            setParams({ search: e.target.value || null, page: 1 })
+          }
         />
 
         <Image
