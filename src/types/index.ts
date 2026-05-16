@@ -8,7 +8,16 @@ export type Category =
   | "Education"
   | "Lifestyle"
   | "Shopping"
-  | "General";
+  | "General"
+  | "All";
+
+export type SortOption =
+  | "latest"
+  | "oldest"
+  | "a-z"
+  | "z-a"
+  | "highest"
+  | "lowest";
 
 export type Transaction = {
   id: string;

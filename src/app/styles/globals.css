@@ -164,14 +164,6 @@
   }
 }
 
-@layer utilities {
-  .h-fill-available {
-    height: -webkit-fill-available;
-    height: -moz-available;
-    height: fill-available;
-  }
-}
-
 .grid-layout {
   display: grid;
   gap: 1.5rem;

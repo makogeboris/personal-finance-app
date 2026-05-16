@@ -4,21 +4,17 @@ import Image from "next/image";
 import { useState } from "react";
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import {
   Select,
   SelectContent,
   SelectGroup,
-  SelectItem,
   SelectItemColor,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
@@ -141,7 +137,7 @@ export function EditPot({ open, onOpenChange }: EditPotProps) {
                 <SelectTrigger className="border-accent w-full border px-5 py-5.5">
                   <SelectValue placeholder="Select a color" />
                   <Image
-                    className="transition-transform duration-200 group-data-[state=open]:rotate-180 md:hidden"
+                    className="h-3 w-3 transition-transform duration-200 group-data-[state=open]:rotate-180 md:hidden"
                     width={12}
                     height={12}
                     alt=""
