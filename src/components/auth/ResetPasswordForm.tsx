@@ -18,6 +18,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useState } from "react";
 import { resetPasswordAction } from "@/actions/auth";
+import { LoaderCircle } from "lucide-react";
 
 const resetPasswordSchema = z
   .object({
@@ -127,7 +128,14 @@ export function ResetPasswordForm({
               {!isSubmitSuccessful && (
                 <Field>
                   <Button type="submit" disabled={isSubmitting}>
-                    {isSubmitting ? "Resetting password..." : "Reset Password"}
+                    <span className="flex items-center gap-2">
+                      {isSubmitting && (
+                        <LoaderCircle className="size-4 animate-spin" />
+                      )}
+                      <span>
+                        {isSubmitting ? "Resetting password" : "Reset Password"}
+                      </span>
+                    </span>
                   </Button>
                 </Field>
               )}

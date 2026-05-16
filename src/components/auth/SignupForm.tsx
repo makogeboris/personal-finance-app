@@ -19,6 +19,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { signupAction } from "@/actions/auth";
+import { LoaderCircle } from "lucide-react";
 
 const signupSchema = z.object({
   name: z
@@ -134,7 +135,14 @@ export function SignupForm({
 
               <Field>
                 <Button type="submit" disabled={isSubmitting}>
-                  {isSubmitting ? "Creating Account..." : "Create Account"}
+                  <span className="flex items-center gap-2">
+                    {isSubmitting && (
+                      <LoaderCircle className="size-4 animate-spin" />
+                    )}
+                    <span>
+                      {isSubmitting ? "Creating Account" : "Create Account"}
+                    </span>
+                  </span>
                 </Button>
               </Field>
 

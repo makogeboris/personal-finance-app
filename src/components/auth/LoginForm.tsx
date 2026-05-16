@@ -19,6 +19,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { loginAction, demoLoginAction } from "@/actions/auth";
+import { LoaderCircle } from "lucide-react";
 
 const loginSchema = z.object({
   email: z
@@ -125,7 +126,12 @@ export function LoginForm({
 
               <Field>
                 <Button type="submit" disabled={isSubmitting || demoLoading}>
-                  {isSubmitting ? "Logging in..." : "Login"}
+                  <span className="flex items-center gap-2">
+                    {isSubmitting && (
+                      <LoaderCircle className="size-4 animate-spin" />
+                    )}
+                    <span>{isSubmitting ? "Logging in" : "Login"}</span>
+                  </span>
                 </Button>
               </Field>
 
@@ -153,9 +159,14 @@ export function LoginForm({
                   type="button"
                   onClick={handleDemo}
                   disabled={demoLoading || isSubmitting}
-                  className="border-accent focus-visible:outline-primary/90 hover:border-chart-1 hover:text-chart-1 w-full transform cursor-pointer rounded-lg border px-8 py-3 text-sm font-semibold transition focus-visible:outline-2 disabled:opacity-50"
+                  className="border-accent focus-visible:outline-primary/90 hover:border-chart-1 hover:text-chart-1 w-full transform cursor-pointer rounded-lg border px-8 py-3 text-sm font-semibold transition focus-visible:outline-2 disabled:cursor-not-allowed disabled:opacity-50"
                 >
-                  {demoLoading ? "Loading demo..." : "Try the demo"}
+                  <span className="flex items-center justify-center gap-2">
+                    {demoLoading && (
+                      <LoaderCircle className="size-4 animate-spin" />
+                    )}
+                    <span>{demoLoading ? "Loading demo" : "Try the demo"}</span>
+                  </span>
                 </button>
                 {demoError && (
                   <p className="text-destructive text-xs">{demoError}</p>

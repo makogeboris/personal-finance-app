@@ -17,6 +17,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { forgotPasswordAction } from "@/actions/auth";
+import { LoaderCircle } from "lucide-react";
 
 const forgotPasswordSchema = z.object({
   email: z
@@ -87,7 +88,14 @@ export function ForgotPasswordForm({
               {!isSubmitSuccessful && (
                 <Field>
                   <Button type="submit" disabled={isSubmitting}>
-                    {isSubmitting ? "Sending link..." : "Send Reset Link"}
+                    <span className="flex items-center gap-2">
+                      {isSubmitting && (
+                        <LoaderCircle className="size-4 animate-spin" />
+                      )}
+                      <span>
+                        {isSubmitting ? "Sending link" : "Send Reset Link"}
+                      </span>
+                    </span>
                   </Button>
                 </Field>
               )}
