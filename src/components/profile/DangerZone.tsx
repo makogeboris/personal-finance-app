@@ -48,6 +48,7 @@ export default function DangerZone() {
                 Delete
               </Button>
             </AlertDialogTrigger>
+
             <AlertDialogContent>
               <AlertDialogHeader>
                 <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
@@ -56,6 +57,7 @@ export default function DangerZone() {
                   your account from our servers.
                 </AlertDialogDescription>
               </AlertDialogHeader>
+
               <AlertDialogFooter>
                 <AlertDialogCancel variant="outline" size="lg">
                   Cancel
