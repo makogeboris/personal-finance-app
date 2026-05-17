@@ -12,6 +12,7 @@ import clsx from "clsx";
 import Image from "next/image";
 import TransactionsPagination from "./Pagination";
 import type { Transaction } from "@/types";
+import TransactionAvatar from "../shared/TransactionAvatar";
 
 function formatCurrency(amount: number) {
   const abs = Math.abs(amount).toFixed(2);
@@ -89,15 +90,13 @@ export default function TransactionsTable({
 
         <TableBody>
           {transactions.map((tx) => (
-            <TableRow key={tx.date} className="lg:px-4">
+            <TableRow key={tx.id} className="lg:px-4">
               <TableCell className="flex flex-col @2xl:w-full">
                 <div className="text-primary flex w-full items-center gap-4 pb-0 text-sm font-bold @2xl:py-4">
-                  <Image
-                    className="relative top-3 rounded-full sm:h-10 sm:w-10 @2xl:static"
-                    width={32}
-                    height={32}
-                    src={`/avatars/${tx.avatar}`}
-                    alt={tx.name}
+                  <TransactionAvatar
+                    avatar={tx.avatar}
+                    name={tx.name}
+                    size={40}
                   />
                   {tx.name}
                 </div>

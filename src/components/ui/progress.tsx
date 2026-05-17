@@ -12,8 +12,9 @@ type ProgressPotProps = React.ComponentProps<typeof ProgressPrimitive.Root> & {
 function ProgressBudget({
   className,
   value,
+  color,
   ...props
-}: React.ComponentProps<typeof ProgressPrimitive.Root>) {
+}: React.ComponentProps<typeof ProgressPrimitive.Root> & { color?: string }) {
   return (
     <ProgressPrimitive.Root
       data-slot="progress"
@@ -25,8 +26,11 @@ function ProgressBudget({
     >
       <ProgressPrimitive.Indicator
         data-slot="progress-indicator"
-        className="bg-chart-1 size-full flex-1 transition-all"
-        style={{ transform: `translateX(-${100 - (value || 0)}%)` }}
+        className="size-full flex-1 transition-all"
+        style={{
+          transform: `translateX(-${100 - (value || 0)}%)`,
+          backgroundColor: color ?? "var(--color-green)",
+        }}
       />
     </ProgressPrimitive.Root>
   );

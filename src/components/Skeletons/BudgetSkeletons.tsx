@@ -1,10 +1,18 @@
 import { Skeleton } from "@/components/ui/skeleton";
 
-export function BudgetsChartSkeleton() {
+export function BudgetPageSkeleton() {
   return (
-    <div className="bg-background rounded-12 flex h-fit w-full flex-col items-center p-5 sm:flex-row lg:max-w-107 lg:flex-col">
-      <ChartPieDonutTextSkeleton />
-      <SpendingSummarySkeleton />
+    <div className="mt-8 flex flex-col gap-6 lg:flex-row">
+      <div className="bg-background rounded-12 flex h-fit w-full flex-col items-center p-5 sm:flex-row lg:max-w-107 lg:flex-col">
+        <ChartPieDonutTextSkeleton />
+        <SpendingSummarySkeleton />
+      </div>
+
+      <div className="flex w-full flex-col gap-6">
+        {Array.from({ length: 4 }).map((_, i) => (
+          <BudgetSkeleton key={i} />
+        ))}
+      </div>
     </div>
   );
 }
@@ -13,7 +21,6 @@ function SpendingSummarySkeleton() {
   return (
     <div className="flex w-full flex-col gap-6">
       <Skeleton className="h-6 w-44" />
-
       <div className="grid w-full grid-cols-1 gap-4">
         {Array.from({ length: 4 }).map((_, i) => (
           <div key={i} className="flex flex-col gap-4">
@@ -63,7 +70,6 @@ export function BudgetSkeleton() {
       <div className="flex w-full flex-col gap-4">
         <Skeleton className="h-4 w-32" />
         <Skeleton className="h-8 w-full rounded-full" />
-
         <div className="flex w-full items-center justify-between">
           <div className="flex w-full items-center gap-4 border-l-4 pl-4">
             <div className="flex flex-col items-start gap-1">
@@ -85,7 +91,6 @@ export function BudgetSkeleton() {
           <Skeleton className="h-5 w-32" />
           <Skeleton className="h-4 w-20" />
         </div>
-
         {Array.from({ length: 3 }).map((_, i) => (
           <div key={i} className="flex flex-col gap-5">
             <div className="flex items-center justify-between">

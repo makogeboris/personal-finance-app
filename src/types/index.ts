@@ -38,6 +38,12 @@ export type Budget = {
   theme: string;
 };
 
+export type BudgetWithData = Budget & {
+  spent: number;
+  remaining: number;
+  latestTransactions: Transaction[];
+};
+
 export type Pot = {
   id: string;
   user_id: string;

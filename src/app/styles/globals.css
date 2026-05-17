@@ -241,3 +241,18 @@
     opacity: 1;
   }
 }
+
+.bar-progress {
+  width: 40%;
+  animation: bar-slide 0.9s linear infinite;
+}
+
+@keyframes bar-slide {
+  0% {
+    transform: translateX(-100%);
+  }
+
+  100% {
+    transform: translateX(250%);
+  }
+}
