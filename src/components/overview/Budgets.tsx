@@ -32,7 +32,7 @@ export default function Budgets() {
 
       <div className="@container">
         <Card className="flex flex-col items-center gap-0 p-0 @lg:flex-row">
-          <ChartPieDonutText />
+          {/* <ChartPieDonutText /> */}
           <ChartSummary />
         </Card>
       </div>
