@@ -1,59 +1,17 @@
 import type { Metadata } from "next";
-import Image from "next/image";
+import { Suspense } from "react";
+import { getBudgets } from "@/lib/data/getBudgets";
 import Budget from "@/components/budgets/Budget";
-import SpendingSummary from "@/components/budgets/SpendingSummary";
 import { ChartPieDonutText } from "@/components/budgets/Chart";
+import SpendingSummary from "@/components/budgets/SpendingSummary";
 import { AddNewBudget } from "@/components/budgets/AddNewBudget";
+import { BudgetPageSkeleton } from "@/components/Skeletons/BudgetSkeletons";
+import { COLOR_MAP_REVERSE } from "@/lib/constants/categories";
+import Image from "next/image";
 
-export const metadata: Metadata = {
-  title: "Budgets",
-};
+export const metadata: Metadata = { title: "Budgets" };
 
-type BudgetType = {
-  id: string;
-  name: string;
-  maximum: number;
-  spent: number;
-  remaining: number;
-  theme: string;
-};
-
-const budgets: BudgetType[] = [
-  {
-    id: "1",
-    name: "Entertainment",
-    maximum: 159,
-    spent: 23,
-    remaining: 45,
-    theme: "var(--color-green)",
-  },
-  {
-    id: "2",
-    name: "Bills",
-    maximum: 150,
-    spent: 23,
-    remaining: 45,
-    theme: "var(--color-navy)",
-  },
-  {
-    id: "3",
-    name: "Dining Out",
-    maximum: 40,
-    spent: 23,
-    remaining: 45,
-    theme: "var(--color-cyan)",
-  },
-  {
-    id: "4",
-    name: "Personal Care",
-    maximum: 10,
-    spent: 23,
-    remaining: 45,
-    theme: "var(--color-yellow)",
-  },
-];
-
-export default function Budgets() {
+export default function BudgetsPage() {
   return (
     <>
       <div className="flex items-center justify-between">
@@ -64,23 +22,36 @@ export default function Budgets() {
           </p>
         </div>
 
-        <AddNewBudget />
+        <Suspense fallback={null}>
+          <AddNewBudgetServer />
+        </Suspense>
       </div>
 
-      <div className="mt-8 flex flex-col gap-6 lg:flex-row">
-        <div className="bg-background rounded-12 flex h-fit w-full flex-col items-center p-5 sm:flex-row lg:max-w-107 lg:flex-col">
-          <ChartPieDonutText />
-          <SpendingSummary />
-        </div>
+      <Suspense fallback={<BudgetPageSkeleton />}>
+        <BudgetsData />
+      </Suspense>
+    </>
+  );
+}
 
-        <div className="flex w-full flex-col gap-6">
-          {budgets.map((budget) => (
-            <Budget key={budget.id} {...budget} />
-          ))}
-        </div>
-      </div>
+async function AddNewBudgetServer() {
+  const budgets = await getBudgets();
+  const usedCategories = budgets.map((b) => b.category);
+  const usedColors = budgets
+    .map((b) => COLOR_MAP_REVERSE[b.theme] ?? "")
+    .filter(Boolean);
 
-      {/* <div className="bg-background rounded-12 mt-8 flex flex-col items-center gap-4 p-4 py-14 text-center">
+  return (
+    <AddNewBudget usedCategories={usedCategories} usedColors={usedColors} />
+  );
+}
+
+async function BudgetsData() {
+  const budgets = await getBudgets();
+
+  if (budgets.length === 0) {
+    return (
+      <div className="bg-background rounded-12 mt-8 flex flex-col items-center gap-4 p-4 py-14 text-center">
         <div className="bg-sidebar-accent grid size-14 place-items-center rounded-full">
           <Image
             width={24}
@@ -89,7 +60,6 @@ export default function Budgets() {
             alt=""
           />
         </div>
-
         <div className="flex flex-col gap-1">
           <h3 className="text-primary text-base font-bold">
             No budgets created
@@ -99,7 +69,29 @@ export default function Budgets() {
             your finances.
           </p>
         </div>
-      </div> */}
-    </>
+      </div>
+    );
+  }
+
+  const totalSpent = budgets.reduce((sum, b) => sum + b.spent, 0);
+  const totalLimit = budgets.reduce((sum, b) => sum + b.maximum, 0);
+
+  return (
+    <div className="mt-8 flex flex-col gap-6 lg:flex-row">
+      <div className="bg-background rounded-12 flex h-fit w-full flex-col items-center p-5 sm:flex-row lg:max-w-107 lg:flex-col">
+        <ChartPieDonutText
+          budgets={budgets}
+          totalSpent={totalSpent}
+          totalLimit={totalLimit}
+        />
+        <SpendingSummary budgets={budgets} />
+      </div>
+
+      <div className="flex w-full flex-col gap-6">
+        {budgets.map((budget) => (
+          <Budget key={budget.id} budget={budget} />
+        ))}
+      </div>
+    </div>
   );
 }

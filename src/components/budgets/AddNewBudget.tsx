@@ -15,7 +15,6 @@ import {
   Select,
   SelectContent,
   SelectGroup,
-  SelectItem,
   SelectItemColor,
   SelectTrigger,
   SelectValue,
@@ -24,64 +23,63 @@ import { Field, FieldGroup, FieldSeparator } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
+import { CATEGORIES, COLORS } from "@/lib/constants/categories";
+import { addBudgetAction } from "@/actions/budgets";
+import { LoaderCircle } from "lucide-react";
 
-const CATEGORIES = [
-  { label: "Entertainment", value: "entertainment" },
-  { label: "Bills", value: "bills" },
-  { label: "Groceries", value: "groceries" },
-  { label: "Dining Out", value: "dining-out" },
-  { label: "Transportation", value: "transportation" },
-  { label: "Personal Care", value: "personal-care" },
-  { label: "Education", value: "education" },
-  { label: "Lifestyle", value: "lifestyle" },
-  { label: "Shopping", value: "shopping" },
-  { label: "General", value: "general" },
-];
+export function AddNewBudget({
+  usedCategories = [],
+  usedColors = [],
+}: {
+  usedCategories?: string[];
+  usedColors?: string[];
+}) {
+  const [open, setOpen] = useState(false);
+  const [category, setCategory] = useState<string>("");
+  const [theme, setTheme] = useState("");
+  const [maximum, setMaximum] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-const COLORS = [
-  { name: "Green", value: "green", class: "bg-green" },
-  { name: "Yellow", value: "yellow", class: "bg-yellow" },
-  { name: "Cyan", value: "cyan", class: "bg-cyan" },
-  { name: "Navy", value: "navy", class: "bg-navy" },
-  { name: "Red", value: "red", class: "bg-red" },
-  { name: "Purple", value: "purple", class: "bg-purple" },
-  { name: "Purple Light", value: "purple-light", class: "bg-purple-light" },
-  { name: "Turquoise", value: "turquoise", class: "bg-turquoise" },
-  { name: "Brown", value: "brown", class: "bg-brown" },
-  { name: "Magenta", value: "magenta", class: "bg-magenta" },
-  { name: "Blue", value: "blue", class: "bg-blue" },
-  { name: "Navy Grey", value: "navy-grey", class: "bg-navy-grey" },
-  { name: "Army Green", value: "army-green", class: "bg-army-green" },
-  { name: "Gold", value: "gold", class: "bg-gold" },
-  { name: "Orange", value: "orange", class: "bg-orange" },
-];
-
-const usedColors = new Set(["green", "blue"]);
-
-export function AddNewBudget() {
-  const [value, setValue] = useState("");
-
-  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
-    let raw = e.target.value;
-
-    raw = raw.replace(/[^0-9.]/g, "");
-
+  function handleAmountChange(e: React.ChangeEvent<HTMLInputElement>) {
+    let raw = e.target.value.replace(/[^0-9.]/g, "");
     const parts = raw.split(".");
-    if (parts.length > 2) {
-      raw = parts[0] + "." + parts.slice(1).join("");
-    }
+    if (parts.length > 2) raw = parts[0] + "." + parts.slice(1).join("");
+    setMaximum(raw);
+  }
 
-    setValue(raw);
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    if (!category || !maximum || !theme) {
+      setError("Please fill in all fields.");
+      return;
+    }
+    setLoading(true);
+    setError(null);
+    const result = await addBudgetAction({
+      category,
+      maximum: parseFloat(maximum),
+      theme,
+    });
+    setLoading(false);
+    if (result?.error) {
+      setError(result.error);
+    } else {
+      setOpen(false);
+      setCategory("");
+      setTheme("");
+      setMaximum("");
+    }
   }
 
   return (
-    <Dialog>
-      <form>
-        <DialogTrigger asChild>
-          <Button>+ Add New Budget</Button>
-        </DialogTrigger>
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <Button>+ Add New Budget</Button>
+      </DialogTrigger>
 
-        <DialogContent>
+      <DialogContent>
+        <form onSubmit={handleSubmit} className="flex flex-col gap-5">
           <DialogHeader>
             <DialogTitle>Add New Budget</DialogTitle>
             <DialogDescription>
@@ -89,6 +87,12 @@ export function AddNewBudget() {
               help you monitor spending.
             </DialogDescription>
           </DialogHeader>
+
+          {error && (
+            <p className="bg-destructive/10 text-destructive rounded-lg px-4 py-3 text-sm font-medium">
+              {error}
+            </p>
+          )}
 
           <FieldGroup className="gap-4">
             <Field className="gap-1">
@@ -98,16 +102,9 @@ export function AddNewBudget() {
               >
                 Budget Category
               </Label>
-              <Select>
+              <Select value={category} onValueChange={setCategory}>
                 <SelectTrigger className="border-accent w-full border px-5 py-5.5">
                   <SelectValue placeholder="Select a category" />
-                  <Image
-                    className="h-3 w-3 transition-transform duration-200 group-data-[state=open]:rotate-180 md:hidden"
-                    width={12}
-                    height={12}
-                    alt=""
-                    src="/icons/icon-caret-down.svg"
-                  />
                 </SelectTrigger>
                 <SelectContent
                   position="popper"
@@ -116,12 +113,15 @@ export function AddNewBudget() {
                   sideOffset={8}
                 >
                   <SelectGroup className="p-2">
-                    {CATEGORIES.map((category, index) => (
-                      <div key={category.value}>
-                        <SelectItem value={category.value}>
-                          {category.label}
-                        </SelectItem>
-
+                    {CATEGORIES.map((cat, index) => (
+                      <div key={cat.value}>
+                        <SelectItemColor
+                          value={cat.value}
+                          disabled={usedCategories.includes(cat.value)}
+                          isUsed={usedCategories.includes(cat.value)}
+                        >
+                          {cat.label}
+                        </SelectItemColor>
                         {index !== CATEGORIES.length - 1 && (
                           <FieldSeparator className="-my-2" />
                         )}
@@ -139,19 +139,16 @@ export function AddNewBudget() {
               >
                 Maximum Spending
               </Label>
-
               <div className="relative w-full">
                 <Input
-                  value={value}
-                  onChange={handleChange}
+                  value={maximum}
+                  onChange={handleAmountChange}
                   id="max-spending"
-                  name="max-spending"
                   type="text"
                   inputMode="decimal"
                   placeholder="e.g. 2000"
                   className="pl-10.5"
                 />
-
                 <Image
                   className="pointer-events-none absolute top-1/2 left-5 size-4 -translate-y-1/2"
                   width={16}
@@ -169,16 +166,9 @@ export function AddNewBudget() {
               >
                 Theme
               </Label>
-              <Select>
+              <Select value={theme} onValueChange={setTheme}>
                 <SelectTrigger className="border-accent w-full border px-5 py-5.5">
                   <SelectValue placeholder="Select a color" />
-                  <Image
-                    className="h-3 w-3 transition-transform duration-200 group-data-[state=open]:rotate-180 md:hidden"
-                    width={12}
-                    height={12}
-                    alt=""
-                    src="/icons/icon-caret-down.svg"
-                  />
                 </SelectTrigger>
                 <SelectContent
                   position="popper"
@@ -191,7 +181,7 @@ export function AddNewBudget() {
                       <SelectItemColor
                         key={color.value}
                         value={color.value}
-                        isUsed={usedColors.has(color.value)}
+                        isUsed={usedColors.includes(color.value)}
                       >
                         <div className="flex items-center gap-3">
                           <div
@@ -208,12 +198,15 @@ export function AddNewBudget() {
           </FieldGroup>
 
           <DialogFooter className="w-full">
-            <Button className="w-full" type="submit">
-              Add Budget
+            <Button className="w-full" type="submit" disabled={loading}>
+              <span className="flex items-center gap-2">
+                {loading && <LoaderCircle className="size-4 animate-spin" />}
+                <span>{loading ? "Adding" : "Add Budget"}</span>
+              </span>
             </Button>
           </DialogFooter>
-        </DialogContent>
-      </form>
+        </form>
+      </DialogContent>
     </Dialog>
   );
 }

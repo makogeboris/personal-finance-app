@@ -11,7 +11,13 @@ export async function getTransactions() {
   if (!user) return { transactions: [] };
 
   if (isDemoUser(user.id)) {
-    return { transactions: demoData.transactions as Transaction[] };
+    return {
+      transactions: demoData.transactions.map((t, i) => ({
+        ...t,
+        id: `demo-tx-${i + 1}`,
+        user_id: user.id,
+      })) as Transaction[],
+    };
   }
 
   const { data } = await supabase
