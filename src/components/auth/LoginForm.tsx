@@ -10,6 +10,7 @@ import {
   FieldError,
   FieldGroup,
   FieldLabel,
+  FieldSeparator,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import Illustration from "./Illustration";
@@ -142,16 +143,7 @@ export function LoginForm({
                 </Link>
               </FieldDescription>
 
-              <div className="relative">
-                <div className="absolute inset-0 flex items-center">
-                  <span className="border-border w-full border-t" />
-                </div>
-                <div className="relative flex justify-center">
-                  <span className="bg-card text-muted-foreground px-3 text-sm">
-                    or
-                  </span>
-                </div>
-              </div>
+              <FieldSeparator />
 
               {/* Demo login */}
               <div className="flex flex-col items-center gap-2">
