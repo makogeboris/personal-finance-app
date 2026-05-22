@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
+import { getRecurringBills } from "@/lib/data/getRecurringBills";
 import { RecurringBillsSummary } from "@/components/recurring-bills/Summary";
-import { RecurringBillsTable } from "@/components/recurring-bills/Table";
+import { RecurringBillsSkeleton } from "@/components/Skeletons/RecurringBillsSkeletons";
+import RecurringBillsClient from "@/components/recurring-bills/RecurringBillsClient";
 
-export const metadata: Metadata = {
-  title: "Recurring Bills",
-};
+export const metadata: Metadata = { title: "Recurring Bills" };
 
-export default function RecurringBills() {
+export default function RecurringBillsPage() {
   return (
     <>
       <div className="flex flex-col">
@@ -16,10 +17,20 @@ export default function RecurringBills() {
         </p>
       </div>
 
-      <div className="mt-8 flex w-full flex-col gap-6 lg:flex-row">
-        <RecurringBillsSummary />
-        <RecurringBillsTable />
-      </div>
+      <Suspense fallback={<RecurringBillsSkeleton />}>
+        <RecurringBillsData />
+      </Suspense>
     </>
+  );
+}
+
+async function RecurringBillsData() {
+  const { bills, summary } = await getRecurringBills();
+
+  return (
+    <div className="mt-8 flex w-full flex-col gap-6 lg:flex-row">
+      <RecurringBillsSummary summary={summary} />
+      <RecurringBillsClient bills={bills} />
+    </div>
   );
 }
