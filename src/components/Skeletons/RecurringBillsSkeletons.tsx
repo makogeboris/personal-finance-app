@@ -10,12 +10,21 @@ import {
 } from "@/components/ui/table";
 import RecurringBillsControls from "../recurring-bills/Controls";
 
+export function RecurringBillsSkeleton() {
+  return (
+    <div className="mt-8 flex w-full flex-col gap-6 lg:flex-row">
+      <RecurringBillsSummarySkeleton />
+      <RecurringBillsTableSkeleton />
+    </div>
+  );
+}
+
 export function RecurringBillsSummarySkeleton() {
   return (
     <div className="flex w-full flex-col gap-3 sm:flex-row sm:gap-6 lg:max-w-84 lg:flex-col">
       <div className="bg-foreground rounded-12 flex w-full gap-5 p-6 sm:flex-col sm:gap-8">
         <Skeleton className="bg-background/20 size-7.75 shrink-0 rounded-md" />
-        <div className="flex flex-col gap-1">
+        <div className="flex flex-col gap-4">
           <Skeleton className="bg-background/20 h-4 w-20" />
           <Skeleton className="bg-background/20 h-9 w-28" />
         </div>

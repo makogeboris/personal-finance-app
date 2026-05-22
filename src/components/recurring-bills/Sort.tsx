@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Select,
   SelectContent,
@@ -9,6 +11,7 @@ import {
 } from "@/components/ui/select";
 import { FieldSeparator } from "../ui/field";
 import { NavIcons } from "../shared/NavIcons";
+import { useQueryStates, parseAsString } from "nuqs";
 
 const SORT_ITEMS = [
   { label: "Latest", value: "latest" },
@@ -20,15 +23,19 @@ const SORT_ITEMS = [
 ];
 
 export function Sort() {
+  const [{ sort }, setParams] = useQueryStates({
+    sort: parseAsString.withDefault("latest"),
+  });
+
   return (
-    <Select>
-      <div className="w-full items-center gap-2 md:flex">
+    <Select value={sort} onValueChange={(v) => setParams({ sort: v })}>
+      <div className="items-center justify-end gap-2 md:flex">
         <span className="text-muted-foreground hidden text-sm whitespace-nowrap md:block">
           Sort by
         </span>
-        <SelectTrigger className="flex w-full items-center md:gap-2">
-          <span className="md:hidden">{NavIcons.sort}</span>
 
+        <SelectTrigger className="flex items-center md:h-12.5 md:w-30 md:gap-2">
+          <span className="md:hidden">{NavIcons.sort}</span>
           <span className="hidden md:inline">
             <SelectValue
               className="text-primary text-sm"
@@ -44,7 +51,6 @@ export function Sort() {
           {SORT_ITEMS.map((item, index) => (
             <div key={item.value}>
               <SelectItem value={item.value}>{item.label}</SelectItem>
-
               {index !== SORT_ITEMS.length - 1 && (
                 <FieldSeparator className="-my-2" />
               )}
