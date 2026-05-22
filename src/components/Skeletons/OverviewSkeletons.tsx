@@ -8,6 +8,18 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
+export function OverviewSkeleton() {
+  return (
+    <div className="grid-layout">
+      <SummarySkeleton />
+      <PotsSkeleton />
+      <BudgetsSkeleton />
+      <TransactionsSkeleton />
+      <RecurringBillsSkeleton />
+    </div>
+  );
+}
+
 export function SummarySkeleton() {
   return (
     <div className="area-stats grid grid-cols-1 gap-3 pt-8 pb-2 md:grid-cols-3 md:gap-6">

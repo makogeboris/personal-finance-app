@@ -1,38 +1,29 @@
-export default function ChartSummary() {
+import type { BudgetWithData } from "@/types";
+
+export default function ChartSummary({
+  budgets,
+}: {
+  budgets: BudgetWithData[];
+}) {
   return (
     <div className="@container flex w-full flex-1 items-center">
       <div className="grid w-full grid-cols-2 gap-4">
-        <div className="flex gap-4">
-          <div className="bg-chart-1 w-1"></div>
-          <div className="flex flex-col items-start gap-1">
-            <span className="text-muted-foreground text-xs">Entertainment</span>
-            <span className="text-primary text-sm font-bold">$50.00</span>
+        {budgets.map((budget) => (
+          <div key={budget.id} className="flex gap-4">
+            <div
+              className="w-1 self-stretch rounded-full"
+              style={{ backgroundColor: budget.theme }}
+            />
+            <div className="flex flex-col items-start gap-1">
+              <span className="text-muted-foreground text-xs">
+                {budget.category}
+              </span>
+              <span className="text-primary text-sm font-bold">
+                ${budget.maximum.toFixed(2)}
+              </span>
+            </div>
           </div>
-        </div>
-
-        <div className="flex gap-4">
-          <div className="bg-chart-2 w-1"></div>
-          <div className="flex flex-col items-start gap-1">
-            <span className="text-muted-foreground text-xs">Bills</span>
-            <span className="text-primary text-sm font-bold">$750.00</span>
-          </div>
-        </div>
-
-        <div className="flex gap-4">
-          <div className="bg-chart-3 w-1"></div>
-          <div className="flex flex-col items-start gap-1">
-            <span className="text-muted-foreground text-xs">Dining Out</span>
-            <span className="text-primary text-sm font-bold">$75.00</span>
-          </div>
-        </div>
-
-        <div className="flex gap-4">
-          <div className="bg-chart-4 w-1"></div>
-          <div className="flex flex-col items-start gap-1">
-            <span className="text-muted-foreground text-xs">Personal Care</span>
-            <span className="text-primary text-sm font-bold">$100.00</span>
-          </div>
-        </div>
+        ))}
       </div>
     </div>
   );

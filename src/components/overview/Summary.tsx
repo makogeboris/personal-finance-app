@@ -1,19 +1,31 @@
-export default function Summary() {
+export default function Summary({
+  balance,
+  income,
+  expenses,
+}: {
+  balance: number;
+  income: number;
+  expenses: number;
+}) {
   return (
     <div className="area-stats grid grid-cols-1 gap-3 pt-8 pb-2 md:grid-cols-3 md:gap-6">
       <div className="bg-foreground rounded-12 flex w-full flex-col items-start gap-2 p-5 sm:p-6">
         <h2 className="text-primary-foreground text-sm">Current Balance</h2>
         <p className="text-primary-foreground text-32 leading-[1.2] font-bold">
-          $4836.00
+          ${balance.toFixed(2)}
         </p>
       </div>
       <div className="bg-background rounded-12 flex w-full flex-col items-start gap-2 p-5 sm:p-6">
         <h2 className="text-muted-foreground text-sm">Income</h2>
-        <p className="text-primary text-32 leading-[1.2] font-bold">$3814.25</p>
+        <p className="text-primary text-32 leading-[1.2] font-bold">
+          ${income.toFixed(2)}
+        </p>
       </div>
       <div className="bg-background rounded-12 flex w-full flex-col items-start gap-2 p-5 sm:p-6">
         <h2 className="text-muted-foreground text-sm">Expenses</h2>
-        <p className="text-primary text-32 leading-[1.2] font-bold">$1700.50</p>
+        <p className="text-primary text-32 leading-[1.2] font-bold">
+          ${expenses.toFixed(2)}
+        </p>
       </div>
     </div>
   );
