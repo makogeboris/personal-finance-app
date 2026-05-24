@@ -1,7 +1,20 @@
+import { createClient } from "@/lib/supabase/server";
+import { redirect } from "next/navigation";
 import { Sidebar, BottomNav } from "@/components/shared/Sidebar";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 
-export default function AppLayout({ children }: { children: React.ReactNode }) {
+export default async function AppLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) redirect("/login");
+
   return (
     <NuqsAdapter>
       <div className="flex lg:h-svh">
@@ -18,8 +31,3 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
     </NuqsAdapter>
   );
 }
-
-// *! CREATE NEW BRANCH BEFORE
-// *! CREATE NEW BRANCH BEFORE
-// *! CREATE NEW BRANCH BEFORE
-// *! CREATE NEW BRANCH BEFORE
