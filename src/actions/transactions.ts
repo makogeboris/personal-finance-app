@@ -19,7 +19,10 @@ export async function addTransactionAction(data: {
   if (!user) return { error: "Not authenticated" };
 
   if (isDemoUser(user.id)) {
-    return { error: "Demo accounts cannot add transactions." };
+    return {
+      error:
+        "Demo accounts can't add transactions. Create an account to get started.",
+    };
   }
 
   const amount =

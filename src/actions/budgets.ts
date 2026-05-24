@@ -34,7 +34,10 @@ export async function addBudgetAction(data: {
   if (!user) return { error: "Not authenticated" };
 
   if (isDemoUser(user.id)) {
-    return { error: "Demo accounts cannot create budgets." };
+    return {
+      error:
+        "Demo accounts can't create budgets. Create an account to get started.",
+    };
   }
 
   const { error } = await supabase.from("budgets").insert({
@@ -63,7 +66,10 @@ export async function editBudgetAction(data: {
   if (!user) return { error: "Not authenticated" };
 
   if (isDemoUser(user.id)) {
-    return { error: "Demo accounts cannot edit budgets." };
+    return {
+      error:
+        "Demo accounts can't edit budgets. Create an account to get started.",
+    };
   }
 
   const { error } = await supabase
@@ -90,7 +96,10 @@ export async function deleteBudgetAction(id: string) {
   if (!user) return { error: "Not authenticated" };
 
   if (isDemoUser(user.id)) {
-    return { error: "Demo accounts cannot delete budgets." };
+    return {
+      error:
+        "Demo accounts can't delete budgets. Create an account to get started.",
+    };
   }
 
   const { error } = await supabase
