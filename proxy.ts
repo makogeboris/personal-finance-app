@@ -38,18 +38,20 @@ export async function proxy(request: NextRequest) {
     "/forgot-password",
     "/reset-password",
   ];
-
   const isPublicRoute = publicRoutes.some(
     (route) => pathname === route || pathname.startsWith(route),
   );
 
   if (!user && !isPublicRoute) {
-    return NextResponse.redirect(new URL("/login", request.url));
+    const url = request.nextUrl.clone();
+    url.pathname = "/login";
+    return NextResponse.redirect(url);
   }
 
-  const isAuthRoute = ["/login", "/signup"].includes(pathname);
-  if (user && isAuthRoute) {
-    return NextResponse.redirect(new URL("/overview", request.url));
+  if (user && ["/login", "/signup"].includes(pathname)) {
+    const url = request.nextUrl.clone();
+    url.pathname = "/overview";
+    return NextResponse.redirect(url);
   }
 
   return supabaseResponse;
