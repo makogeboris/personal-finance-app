@@ -1,11 +1,15 @@
 "use client";
 
+import { useState } from "react";
 import { Button } from "../ui/button";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Field, FieldError, FieldLabel, FieldSeparator } from "../ui/field";
 import { Input } from "../ui/input";
+import { updateNameAction, updateEmailAction } from "@/actions/profile";
+import type { ProfileData } from "@/lib/data/getProfile";
+import { LoaderCircle } from "lucide-react";
 
 const nameSchema = z.object({
   name: z
@@ -19,53 +23,67 @@ const emailSchema = z.object({
     .string()
     .min(1, "Email is required")
     .email("Please enter a valid email address"),
-  password: z
-    .string()
-    .min(1, "Password is required")
-    .min(8, "Password must be at least 8 characters")
-    .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
-    .regex(/[0-9]/, "Password must contain at least one number"),
 });
 
-type nameValues = z.infer<typeof nameSchema>;
-type emailValues = z.infer<typeof emailSchema>;
+type NameValues = z.infer<typeof nameSchema>;
+type EmailValues = z.infer<typeof emailSchema>;
 
-export default function Identity() {
+export default function Identity({ profile }: { profile: ProfileData }) {
   return (
     <div className="bg-background rounded-12 flex h-fit flex-col gap-5 p-6 sm:p-8">
-      <Name />
+      <Name profile={profile} />
       <FieldSeparator />
-      <Email />
+      <Email profile={profile} />
     </div>
   );
 }
 
-export function Name({ className, ...props }: React.ComponentProps<"div">) {
+function Name({ profile }: { profile: ProfileData }) {
+  const [serverError, setServerError] = useState<string | null>(null);
+  const [serverSuccess, setServerSuccess] = useState(false);
+
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<nameValues>({
+  } = useForm<NameValues>({
     resolver: zodResolver(nameSchema),
+    defaultValues: { name: profile.name },
     mode: "onSubmit",
     reValidateMode: "onChange",
   });
 
-  const onSubmit = async (data: nameValues) => {
-    // Handle form submission
-    console.log(data);
-  };
+  async function onSubmit(data: NameValues) {
+    setServerError(null);
+    setServerSuccess(false);
+    const result = await updateNameAction(data);
+    if (result?.error) {
+      setServerError(result.error);
+    } else {
+      setServerSuccess(true);
+      setTimeout(() => setServerSuccess(false), 3000);
+    }
+  }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="grid gap-4">
-      <div className="flex items-start justify-between">
-        <div>
-          <h2 className="text-primary text-xl font-bold">Full Name</h2>
-          <p className="text-muted-foreground mt-0.5 text-sm">
-            Update your display name.
-          </p>
-        </div>
+      <div>
+        <h2 className="text-primary text-xl font-bold">Full Name</h2>
+        <p className="text-muted-foreground mt-0.5 text-sm">
+          Update your display name.
+        </p>
       </div>
+
+      {serverError && (
+        <p className="bg-destructive/10 text-destructive rounded-lg px-4 py-3 text-sm font-medium">
+          {serverError}
+        </p>
+      )}
+      {serverSuccess && (
+        <p className="bg-chart-1/10 text-chart-1 rounded-lg px-4 py-3 text-sm font-medium">
+          Name updated successfully.
+        </p>
+      )}
 
       <Field className="gap-1">
         <FieldLabel htmlFor="name">Name</FieldLabel>
@@ -73,6 +91,7 @@ export function Name({ className, ...props }: React.ComponentProps<"div">) {
           id="name"
           type="text"
           placeholder="Lenny Smith"
+          disabled={profile.isDemo}
           aria-invalid={!!errors.name}
           {...register("name")}
         />
@@ -80,39 +99,66 @@ export function Name({ className, ...props }: React.ComponentProps<"div">) {
       </Field>
 
       <div className="flex justify-end">
-        <Button size="lg" type="submit" disabled={isSubmitting}>
-          {isSubmitting ? "Saving..." : "Save Name"}
+        <Button
+          size="lg"
+          type="submit"
+          disabled={isSubmitting || profile.isDemo}
+        >
+          <span className="flex items-center gap-2">
+            {isSubmitting && <LoaderCircle className="size-4 animate-spin" />}
+            <span>{isSubmitting ? "Saving" : "Save Name"}</span>
+          </span>
         </Button>
       </div>
     </form>
   );
 }
 
-export function Email({ className, ...props }: React.ComponentProps<"div">) {
+function Email({ profile }: { profile: ProfileData }) {
+  const [serverError, setServerError] = useState<string | null>(null);
+  const [serverSuccess, setServerSuccess] = useState<string | null>(null);
+
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<emailValues>({
+  } = useForm<EmailValues>({
     resolver: zodResolver(emailSchema),
+    defaultValues: { email: profile.email },
     mode: "onSubmit",
     reValidateMode: "onChange",
   });
 
-  const onSubmit = async (data: emailValues) => {
-    // Handle form submission
-    console.log(data);
-  };
+  async function onSubmit(data: EmailValues) {
+    setServerError(null);
+    setServerSuccess(null);
+    const result = await updateEmailAction(data);
+    if (result?.error) {
+      setServerError(result.error);
+    } else {
+      setServerSuccess(result.message ?? "Verification email sent.");
+    }
+  }
+
   return (
     <form className="grid gap-4" onSubmit={handleSubmit(onSubmit)}>
-      <div className="flex items-start justify-between">
-        <div>
-          <h2 className="text-primary text-xl font-bold">Email Address</h2>
-          <p className="text-muted-foreground mt-0.5 text-sm">
-            A verification email will be sent on change.
-          </p>
-        </div>
+      <div>
+        <h2 className="text-primary text-xl font-bold">Email Address</h2>
+        <p className="text-muted-foreground mt-0.5 text-sm">
+          A verification email will be sent on change.
+        </p>
       </div>
+
+      {serverError && (
+        <p className="bg-destructive/10 text-destructive rounded-lg px-4 py-3 text-sm font-medium">
+          {serverError}
+        </p>
+      )}
+      {serverSuccess && (
+        <p className="bg-chart-1/10 text-chart-1 rounded-lg px-4 py-3 text-sm font-medium">
+          {serverSuccess}
+        </p>
+      )}
 
       <Field className="gap-1">
         <FieldLabel htmlFor="email">Email</FieldLabel>
@@ -120,6 +166,7 @@ export function Email({ className, ...props }: React.ComponentProps<"div">) {
           id="email"
           type="email"
           placeholder="lennysmith@example.com"
+          disabled={profile.isDemo}
           aria-invalid={!!errors.email}
           {...register("email")}
         />
@@ -127,8 +174,15 @@ export function Email({ className, ...props }: React.ComponentProps<"div">) {
       </Field>
 
       <div className="flex justify-end">
-        <Button size="lg" type="submit" disabled={isSubmitting}>
-          {isSubmitting ? "Saving..." : "Save Email"}
+        <Button
+          size="lg"
+          type="submit"
+          disabled={isSubmitting || profile.isDemo}
+        >
+          <span className="flex items-center gap-2">
+            {isSubmitting && <LoaderCircle className="size-4 animate-spin" />}
+            <span>{isSubmitting ? "Saving" : "Save Email"}</span>
+          </span>
         </Button>
       </div>
     </form>

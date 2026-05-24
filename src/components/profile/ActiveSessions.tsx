@@ -1,59 +1,51 @@
 "use client";
 
-import clsx from "clsx";
 import { useState } from "react";
+import { LoaderCircle } from "lucide-react";
+import { createClient } from "@/lib/supabase/client";
+import { NavIcons } from "../shared/NavIcons";
 
-interface Session {
-  id: string;
-  device: "desktop" | "mobile" | "tablet";
+interface CurrentSession {
   browser: string;
   os: string;
-  location: string;
   lastActive: string;
-  current: boolean;
 }
 
-const mockSessions: Session[] = [
-  {
-    id: "1",
-    device: "desktop",
-    browser: "Chrome 124",
-    os: "macOS",
-    location: "London, UK",
+function detectBrowser(): string {
+  if (typeof window === "undefined") return "Unknown browser";
+  const ua = navigator.userAgent;
+  if (ua.includes("Firefox")) return "Firefox";
+  if (ua.includes("Edg")) return "Edge";
+  if (ua.includes("Chrome")) return "Chrome";
+  if (ua.includes("Safari")) return "Safari";
+  return "Unknown browser";
+}
+
+function detectOS(): string {
+  if (typeof window === "undefined") return "Unknown OS";
+  const ua = navigator.userAgent;
+  if (ua.includes("Win")) return "Windows";
+  if (ua.includes("Mac")) return "macOS";
+  if (ua.includes("iPhone")) return "iOS";
+  if (ua.includes("Android")) return "Android";
+  if (ua.includes("Linux")) return "Linux";
+  return "Unknown OS";
+}
+
+export default function ActiveSessions({ isDemo }: { isDemo: boolean }) {
+  const [signingOutAll, setSigningOutAll] = useState(false);
+
+  const [session] = useState<CurrentSession>(() => ({
+    browser: detectBrowser(),
+    os: detectOS(),
     lastActive: "Active now",
-    current: true,
-  },
-  {
-    id: "2",
-    device: "mobile",
-    browser: "Safari 17",
-    os: "iOS 17",
-    location: "London, UK",
-    lastActive: "2 hours ago",
-    current: false,
-  },
-  {
-    id: "3",
-    device: "desktop",
-    browser: "Firefox 125",
-    os: "Windows 11",
-    location: "Manchester, UK",
-    lastActive: "Yesterday",
-    current: false,
-  },
-];
+  }));
 
-export default function ActiveSessions() {
-  const [sessions, setSessions] = useState<Session[]>(mockSessions);
-  const [revoking, setRevoking] = useState<string | null>(null);
-
-  function handleRevoke(id: string) {
-    setRevoking(id);
-    // simulate async — replace with your Supabase call
-    setTimeout(() => {
-      setSessions((prev) => prev.filter((s) => s.id !== id));
-      setRevoking(null);
-    }, 800);
+  async function handleSignOutAll() {
+    setSigningOutAll(true);
+    const supabase = createClient();
+    await supabase.auth.signOut({ scope: "global" });
+    window.location.href = "/login";
   }
 
   return (
@@ -65,64 +57,52 @@ export default function ActiveSessions() {
         </p>
       </div>
 
+      {isDemo && (
+        <p className="bg-muted text-muted-foreground rounded-lg px-4 py-3 text-sm">
+          Session management is not available for demo accounts.
+        </p>
+      )}
+
       <div className="flex flex-col gap-3">
-        {sessions.map((session) => (
-          <div
-            key={session.id}
-            className={clsx(
-              "flex items-center gap-4 rounded-lg p-4 transition-colors",
-              session.current
-                ? "bg-chart-1/8 border-chart-1/20 border"
-                : "bg-muted",
-            )}
-          >
-            <div
-              className={clsx(
-                "flex h-10 w-10 shrink-0 items-center justify-center rounded-lg",
-                session.current
-                  ? "bg-chart-1/15 text-chart-1"
-                  : "bg-background text-muted-foreground",
-              )}
-            >
-              <DeviceIcon type={session.device} />
-            </div>
-
-            <div className="flex min-w-0 flex-1 flex-col gap-0.5">
-              <div className="flex flex-wrap items-center gap-2">
-                <p className="text-foreground text-sm font-bold">
-                  {session.browser} · {session.os}
-                </p>
-                {session.current && (
-                  <span className="bg-chart-1/15 text-chart-1 shrink-0 rounded-full px-2 py-0.5 text-[10px] font-bold tracking-wider uppercase">
-                    This device
-                  </span>
-                )}
-              </div>
-              <p className="text-muted-foreground truncate text-xs">
-                {session.location} · {session.lastActive}
-              </p>
-            </div>
-
-            {!session.current && (
-              <button
-                onClick={() => handleRevoke(session.id)}
-                disabled={revoking === session.id}
-                className="text-muted-foreground hover:text-destructive focus-visible:outline-foreground shrink-0 cursor-pointer rounded-xs text-xs font-bold focus-visible:outline-2 focus-visible:outline-offset-2 disabled:opacity-50"
-              >
-                {revoking === session.id ? "Revoking…" : "Revoke"}
-              </button>
-            )}
+        {/* Current session — always shown */}
+        <div className="bg-chart-1/8 border-chart-1/20 flex items-center gap-4 rounded-lg border p-4">
+          <div className="bg-chart-1/15 text-chart-1 flex h-10 w-10 shrink-0 items-center justify-center rounded-lg">
+            <DeviceIcon type={detectDeviceType()} />
           </div>
-        ))}
+
+          <div className="flex min-w-0 flex-1 flex-col gap-0.5">
+            <div className="flex flex-wrap items-center gap-2">
+              <p className="text-foreground text-sm font-bold">
+                {session ? `${session.browser} · ${session.os}` : "Loading..."}
+              </p>
+              <span className="bg-chart-1/15 text-chart-1 shrink-0 rounded-full px-2 py-0.5 text-[10px] font-bold tracking-wider uppercase">
+                This device
+              </span>
+            </div>
+            <p className="text-muted-foreground truncate text-xs">
+              Current session · Active now
+            </p>
+          </div>
+        </div>
+
+        {/* Note about other sessions */}
+        {!isDemo && (
+          <p className="text-muted-foreground bg-muted rounded-lg px-4 py-3 text-xs">
+            Other active sessions are not shown. Use &quot;Sign out
+            everywhere&quot; to revoke access from all devices at once.
+          </p>
+        )}
       </div>
 
-      {sessions.length > 1 && (
+      {!isDemo && (
         <div className="border-border flex justify-end border-t pt-4">
           <button
-            onClick={() => setSessions((prev) => prev.filter((s) => s.current))}
-            className="text-muted-foreground hover:text-destructive focus-visible:outline-foreground cursor-pointer rounded-xs text-xs font-bold focus-visible:outline-2 focus-visible:outline-offset-2"
+            onClick={handleSignOutAll}
+            disabled={signingOutAll}
+            className="text-muted-foreground hover:text-destructive focus-visible:outline-foreground flex cursor-pointer items-center gap-2 rounded-xs text-xs font-bold focus-visible:outline-2 focus-visible:outline-offset-2 disabled:opacity-50"
           >
-            Sign out all other sessions
+            {signingOutAll && <LoaderCircle className="size-3 animate-spin" />}
+            Sign out everywhere
           </button>
         </div>
       )}
@@ -130,53 +110,16 @@ export default function ActiveSessions() {
   );
 }
 
-/* ── Device icon ── */
+function detectDeviceType(): "desktop" | "mobile" | "tablet" {
+  if (typeof window === "undefined") return "desktop";
+  const ua = navigator.userAgent;
+  if (/tablet|ipad/i.test(ua)) return "tablet";
+  if (/mobile|iphone|android/i.test(ua)) return "mobile";
+  return "desktop";
+}
+
 function DeviceIcon({ type }: { type: "desktop" | "mobile" | "tablet" }) {
-  if (type === "mobile")
-    return (
-      <svg
-        width="18"
-        height="18"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <rect x="5" y="2" width="14" height="20" rx="2" />
-        <circle cx="12" cy="17" r="1" fill="currentColor" stroke="none" />
-      </svg>
-    );
-  if (type === "tablet")
-    return (
-      <svg
-        width="18"
-        height="18"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <rect x="3" y="2" width="18" height="20" rx="2" />
-        <circle cx="12" cy="17" r="1" fill="currentColor" stroke="none" />
-      </svg>
-    );
-  return (
-    <svg
-      width="18"
-      height="18"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <rect x="2" y="4" width="20" height="14" rx="2" />
-      <path d="M8 20h8M12 18v2" />
-    </svg>
-  );
+  if (type === "mobile") return NavIcons.mobileIcon;
+  if (type === "tablet") return NavIcons.tabletIcon;
+  return NavIcons.desktopIcon;
 }

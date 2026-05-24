@@ -1,16 +1,14 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import {
-  Field,
-  FieldDescription,
-  FieldError,
-  FieldLabel,
-} from "@/components/ui/field";
-import PasswordInput from "../auth/PasswordInput";
+import { useState } from "react";
+import { Button } from "../ui/button";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { Field, FieldDescription, FieldError, FieldLabel } from "../ui/field";
+import PasswordInput from "../auth/PasswordInput";
+import { updatePasswordAction } from "@/actions/profile";
+import { LoaderCircle } from "lucide-react";
 
 const passwordSchema = z
   .object({
@@ -19,8 +17,8 @@ const passwordSchema = z
       .string()
       .min(1, "Password is required")
       .min(8, "Password must be at least 8 characters")
-      .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
-      .regex(/[0-9]/, "Password must contain at least one number"),
+      .regex(/[A-Z]/, "Must contain at least one uppercase letter")
+      .regex(/[0-9]/, "Must contain at least one number"),
     confirmPassword: z.string().min(1, "Please confirm your password"),
   })
   .refine((data) => data.password === data.confirmPassword, {
@@ -30,41 +28,53 @@ const passwordSchema = z
 
 type PasswordFormValues = z.infer<typeof passwordSchema>;
 
-export default function Password() {
+export default function Password({ isDemo }: { isDemo: boolean }) {
+  const [serverError, setServerError] = useState<string | null>(null);
+  const [serverSuccess, setServerSuccess] = useState(false);
+
   const {
     register,
     handleSubmit,
     reset,
-    formState: { errors, isSubmitting, isSubmitSuccessful },
+    formState: { errors, isSubmitting },
   } = useForm<PasswordFormValues>({
     resolver: zodResolver(passwordSchema),
     mode: "onSubmit",
     reValidateMode: "onChange",
   });
 
-  const onSubmit = async (data: PasswordFormValues) => {
-    // Call API with current and new password
-    console.log({
+  async function onSubmit(data: PasswordFormValues) {
+    setServerError(null);
+    const result = await updatePasswordAction({
       currentPassword: data.currentPassword,
       password: data.password,
     });
-    reset();
-  };
+    if (result?.error) {
+      setServerError(result.error);
+    } else {
+      setServerSuccess(true);
+      reset();
+    }
+  }
 
   return (
     <div className="bg-background rounded-12 flex h-fit flex-col gap-5 p-6 sm:p-8">
-      <div className="flex items-start justify-between">
-        <div>
-          <h2 className="text-primary text-xl font-bold">Password</h2>
-          <p className="text-muted-foreground mt-0.5 text-sm">
-            Choose a strong password.
-          </p>
-        </div>
+      <div>
+        <h2 className="text-primary text-xl font-bold">Password</h2>
+        <p className="text-muted-foreground mt-0.5 text-sm">
+          Choose a strong password.
+        </p>
       </div>
 
-      {isSubmitSuccessful ? (
-        <p className="text-muted-foreground text-sm">
-          Your password has been updated successfully.
+      {serverError && (
+        <p className="bg-destructive/10 text-destructive rounded-lg px-4 py-3 text-sm font-medium">
+          {serverError}
+        </p>
+      )}
+
+      {serverSuccess ? (
+        <p className="bg-chart-1/10 text-chart-1 rounded-lg px-4 py-3 text-sm font-medium">
+          Password updated successfully.
         </p>
       ) : (
         <form className="grid gap-4" onSubmit={handleSubmit(onSubmit)}>
@@ -75,6 +85,7 @@ export default function Password() {
               </FieldLabel>
               <PasswordInput
                 id="currentPassword"
+                disabled={isDemo}
                 aria-invalid={!!errors.currentPassword}
                 {...register("currentPassword")}
               />
@@ -87,6 +98,7 @@ export default function Password() {
               <FieldLabel htmlFor="password">New password</FieldLabel>
               <PasswordInput
                 id="password"
+                disabled={isDemo}
                 aria-invalid={!!errors.password}
                 {...register("password")}
               />
@@ -105,6 +117,7 @@ export default function Password() {
               </FieldLabel>
               <PasswordInput
                 id="confirmPassword"
+                disabled={isDemo}
                 aria-invalid={!!errors.confirmPassword}
                 {...register("confirmPassword")}
               />
@@ -115,8 +128,13 @@ export default function Password() {
           </div>
 
           <div className="flex justify-end">
-            <Button size="lg" type="submit" disabled={isSubmitting}>
-              {isSubmitting ? "Updating..." : "Update Password"}
+            <Button size="lg" type="submit" disabled={isSubmitting || isDemo}>
+              <span className="flex items-center gap-2">
+                {isSubmitting && (
+                  <LoaderCircle className="size-4 animate-spin" />
+                )}
+                <span>{isSubmitting ? "Updating" : "Update Password"}</span>
+              </span>
             </Button>
           </div>
         </form>

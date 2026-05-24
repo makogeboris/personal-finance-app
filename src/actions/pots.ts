@@ -17,7 +17,9 @@ export async function addPotAction(data: {
   if (!user) return { error: "Not authenticated" };
 
   if (isDemoUser(user.id)) {
-    return { error: "Demo accounts cannot add pots." };
+    return {
+      error: "Demo accounts can't add pots. Create an account to get started.",
+    };
   }
 
   const { error } = await supabase.from("pots").insert({
@@ -48,7 +50,9 @@ export async function editPotAction(data: {
   if (!user) return { error: "Not authenticated" };
 
   if (isDemoUser(user.id)) {
-    return { error: "Demo accounts cannot edit pots." };
+    return {
+      error: "Demo accounts can't edit pots. Create an account to get started.",
+    };
   }
 
   const { error } = await supabase
@@ -76,7 +80,10 @@ export async function deletePotAction(id: string) {
   if (!user) return { error: "Not authenticated" };
 
   if (isDemoUser(user.id)) {
-    return { error: "Demo accounts cannot delete pots." };
+    return {
+      error:
+        "Demo accounts can't delete pots. Create an account to get started.",
+    };
   }
 
   const { error } = await supabase
@@ -100,7 +107,10 @@ export async function addToPotAction(id: string, amount: number) {
   if (!user) return { error: "Not authenticated" };
 
   if (isDemoUser(user.id)) {
-    return { error: "Demo accounts cannot add to pots." };
+    return {
+      error:
+        "Demo accounts can't add to pots. Create an account to get started.",
+    };
   }
 
   const { data: pot, error: fetchError } = await supabase
@@ -135,7 +145,10 @@ export async function withdrawFromPotAction(id: string, amount: number) {
   if (!user) return { error: "Not authenticated" };
 
   if (isDemoUser(user.id)) {
-    return { error: "Demo accounts cannot withdraw from pots." };
+    return {
+      error:
+        "Demo accounts can't withdraw from pots. Create an account to get started.",
+    };
   }
 
   const { data: pot, error: fetchError } = await supabase
