@@ -4,6 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 import { isDemoUser } from "@/lib/auth/isDemoUser";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { createClient as createClient2 } from "@supabase/supabase-js";
 
 export async function updateNameAction(data: { name: string }) {
   const supabase = await createClient();
@@ -19,12 +20,15 @@ export async function updateNameAction(data: { name: string }) {
     };
   }
 
-  const { error } = await supabase
-    .from("profiles")
-    .update({ name: data.name })
-    .eq("id", user.id);
+  const [profileResult, authResult] = await Promise.all([
+    supabase.from("profiles").update({ name: data.name }).eq("id", user.id),
+    supabase.auth.updateUser({
+      data: { name: data.name },
+    }),
+  ]);
 
-  if (error) return { error: error.message };
+  if (profileResult.error) return { error: profileResult.error.message };
+  if (authResult.error) return { error: authResult.error.message };
 
   revalidatePath("/profile");
   return { success: true };
@@ -108,5 +112,12 @@ export async function deleteAccountAction() {
   ]);
 
   await supabase.auth.signOut();
+
+  const adminClient = createClient2(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!,
+  );
+  await adminClient.auth.admin.deleteUser(user.id);
+
   redirect("/");
 }

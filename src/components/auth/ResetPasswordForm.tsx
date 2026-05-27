@@ -16,9 +16,10 @@ import PasswordInput from "./PasswordInput";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { resetPasswordAction } from "@/actions/auth";
 import { LoaderCircle } from "lucide-react";
+import { createClient } from "@/lib/supabase/client";
 
 const resetPasswordSchema = z
   .object({
@@ -41,7 +42,20 @@ export function ResetPasswordForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
+  const [ready, setReady] = useState(false);
   const [serverError, setServerError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const supabase = createClient();
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange(async (event) => {
+      if (event === "PASSWORD_RECOVERY") {
+        setReady(true);
+      }
+    });
+    return () => subscription.unsubscribe();
+  }, []);
 
   const {
     register,
@@ -60,6 +74,17 @@ export function ResetPasswordForm({
       setServerError(result.error);
     }
   };
+
+  if (!ready) {
+    return (
+      // show the form shell but with a message
+      <div className="flex flex-col gap-6">
+        <p className="text-muted-foreground text-center text-sm">
+          Validating your reset link...
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
