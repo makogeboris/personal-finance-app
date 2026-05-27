@@ -37,7 +37,9 @@ export async function proxy(request: NextRequest) {
     "/signup",
     "/forgot-password",
     "/reset-password",
+    "/email-confirmed",
   ];
+
   const isPublicRoute = publicRoutes.some(
     (route) => pathname === route || pathname.startsWith(route),
   );

@@ -42,13 +42,15 @@ export async function updateEmailAction(data: { email: string }) {
   if (!user) return { error: "Not authenticated" };
 
   if (isDemoUser(user.id)) {
-    return {
-      error:
-        "Demo accounts cannot be modified. Create a free account to manage your settings.",
-    };
+    return { error: "Demo accounts cannot be modified." };
   }
 
-  const { error } = await supabase.auth.updateUser({ email: data.email });
+  const { error } = await supabase.auth.updateUser(
+    { email: data.email },
+    {
+      emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/email-confirmed`,
+    },
+  );
 
   if (error) return { error: error.message };
 
