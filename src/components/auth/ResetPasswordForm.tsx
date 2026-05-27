@@ -42,20 +42,33 @@ export function ResetPasswordForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
-  const [ready, setReady] = useState(false);
+  const [ready, setReady] = useState(() => {
+    if (typeof window === "undefined") return false;
+
+    const hash = window.location.hash;
+
+    return hash.includes("access_token") && hash.includes("type=recovery");
+  });
+
   const [serverError, setServerError] = useState<string | null>(null);
 
   useEffect(() => {
+    if (ready) return;
+
     const supabase = createClient();
+
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange(async (event) => {
+    } = supabase.auth.onAuthStateChange((event) => {
       if (event === "PASSWORD_RECOVERY") {
         setReady(true);
       }
     });
-    return () => subscription.unsubscribe();
-  }, []);
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, [ready]);
 
   const {
     register,
@@ -69,7 +82,11 @@ export function ResetPasswordForm({
 
   const onSubmit = async (data: ResetPasswordFormValues) => {
     setServerError(null);
-    const result = await resetPasswordAction({ password: data.password });
+
+    const result = await resetPasswordAction({
+      password: data.password,
+    });
+
     if (result?.error) {
       setServerError(result.error);
     }
@@ -77,7 +94,6 @@ export function ResetPasswordForm({
 
   if (!ready) {
     return (
-      // show the form shell but with a message
       <div className="flex flex-col gap-6">
         <p className="text-muted-foreground text-center text-sm">
           Validating your reset link...
