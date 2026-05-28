@@ -58,16 +58,25 @@ export async function forgotPasswordAction(data: { email: string }) {
   return { success: true };
 }
 
-export async function resetPasswordAction(data: { password: string }) {
+export async function resetPasswordAction(data: {
+  password: string;
+  code?: string;
+}) {
   const supabase = await createClient();
+
+  // Exchange the PKCE code for a session if provided
+  if (data.code) {
+    const { error: exchangeError } = await supabase.auth.exchangeCodeForSession(
+      data.code,
+    );
+    if (exchangeError) return { error: exchangeError.message };
+  }
 
   const { error } = await supabase.auth.updateUser({
     password: data.password,
   });
 
-  if (error) {
-    return { error: error.message };
-  }
+  if (error) return { error: error.message };
 
   return { success: true };
 }
