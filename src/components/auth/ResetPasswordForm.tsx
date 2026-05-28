@@ -46,8 +46,14 @@ export function ResetPasswordForm({
     if (typeof window === "undefined") return false;
 
     const hash = window.location.hash;
+    const params = new URLSearchParams(window.location.search);
 
-    return hash.includes("access_token") && hash.includes("type=recovery");
+    const hasCode = params.has("code");
+
+    const hasHash =
+      hash.includes("access_token") && hash.includes("type=recovery");
+
+    return hasCode || hasHash;
   });
 
   const [serverError, setServerError] = useState<string | null>(null);
@@ -83,8 +89,12 @@ export function ResetPasswordForm({
   const onSubmit = async (data: ResetPasswordFormValues) => {
     setServerError(null);
 
+    const params = new URLSearchParams(window.location.search);
+    const code = params.get("code") ?? undefined;
+
     const result = await resetPasswordAction({
       password: data.password,
+      code,
     });
 
     if (result?.error) {
