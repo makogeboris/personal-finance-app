@@ -59,7 +59,7 @@ export default function Navbar() {
           <div className="hidden items-center gap-4 md:flex">
             <Link
               href="/login"
-              className="text-foreground hover:text-chart-1 focus-visible:outline-primary/90 rounded-xs text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-4"
+              className="border-accent focus-visible:outline-primary/90 hover:border-chart-1 hover:text-chart-1 transform rounded-full border px-5 py-2.25 text-sm font-semibold transition focus-visible:outline-2"
             >
               Log in
             </Link>
