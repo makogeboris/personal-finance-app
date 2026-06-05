@@ -4,19 +4,14 @@ import demoData from "./data.json";
 import type { Transaction, Budget, Pot } from "@/types";
 import type { RecurringBillsSummaryData } from "./getRecurringBills";
 
-const REFERENCE_MONTH = "2026-08";
-const REFERENCE_DATE = new Date("2026-08-19");
 const DUE_SOON_DAYS = 5;
 
 export type OverviewData = {
-  // Summary
   balance: number;
   income: number;
   expenses: number;
-  // Pots
   totalSaved: number;
   pots: Pick<Pot, "id" | "name" | "saved" | "theme">[];
-  // Budgets
   budgets: {
     id: string;
     category: string;
@@ -26,12 +21,10 @@ export type OverviewData = {
   }[];
   totalSpent: number;
   totalLimit: number;
-  // Transactions (latest 5)
   transactions: Pick<
     Transaction,
     "id" | "name" | "avatar" | "amount" | "date"
   >[];
-  // Recurring bills summary
   bills: RecurringBillsSummaryData;
 };
 
@@ -102,6 +95,16 @@ export async function getOverview(): Promise<OverviewData> {
     pots = potRes.data ?? [];
   }
 
+  const latestTx =
+    transactions.length > 0
+      ? [...transactions].sort(
+          (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
+        )[0]
+      : null;
+
+  const referenceDate = latestTx ? new Date(latestTx.date) : new Date();
+  const referenceMonth = referenceDate.toISOString().slice(0, 7);
+
   // Summary
   const income = transactions
     .filter((t) => t.amount > 0)
@@ -113,7 +116,6 @@ export async function getOverview(): Promise<OverviewData> {
 
   // Pots
   const totalSaved = pots.reduce((s, p) => s + p.saved, 0);
-  // Show max 4 pots on overview
   const topPots = pots.slice(0, 4).map((p) => ({
     id: p.id,
     name: p.name,
@@ -121,13 +123,13 @@ export async function getOverview(): Promise<OverviewData> {
     theme: p.theme,
   }));
 
-  // Budgets
+  // Budgets — spent = expenses in reference month only
   const budgetData = budgets.map((b) => {
     const spent = transactions
       .filter(
         (t) =>
           t.category === b.category &&
-          t.date.startsWith(REFERENCE_MONTH) &&
+          t.date.startsWith(referenceMonth) &&
           t.amount < 0,
       )
       .reduce((s, t) => s + Math.abs(t.amount), 0);
@@ -167,16 +169,20 @@ export async function getOverview(): Promise<OverviewData> {
     }
   }
 
+  const referenceDay = referenceDate.getDate();
+
   const recurringBills = Array.from(vendorMap.values()).map((tx) => {
     const dayOfMonth = new Date(tx.date).getDate();
+
     const isPaid = recurringTx.some(
-      (t) => t.name === tx.name && t.date.startsWith(REFERENCE_MONTH),
+      (t) => t.name === tx.name && t.date.startsWith(referenceMonth),
     );
-    const referenceDay = REFERENCE_DATE.getDate();
+
     const isDueSoon =
       !isPaid &&
       dayOfMonth > referenceDay &&
       dayOfMonth <= referenceDay + DUE_SOON_DAYS;
+
     return { amount: Math.abs(tx.amount), isPaid, isDueSoon };
   });
 
