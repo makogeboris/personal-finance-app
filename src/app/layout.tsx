@@ -25,6 +25,12 @@ export default function RootLayout({
       data-scroll-behavior="smooth"
       className={`${publicSans.variable} antialiased`}
     >
+      <head>
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1, viewport-fit=cover"
+        />
+      </head>
       <body className="bg-secondary">{children}</body>
     </html>
   );

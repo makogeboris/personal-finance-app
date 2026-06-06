@@ -21,7 +21,7 @@ export default async function AppLayout({
         <Sidebar />
 
         <main className="flex-1 lg:overflow-y-scroll">
-          <div className="px-4 py-6 pb-20 sm:px-10 sm:pt-10 sm:pb-24 lg:pb-8">
+          <div className="pb-safe px-4 pt-6 sm:p-6 sm:px-10 lg:p-8 lg:pb-8!">
             {children}
           </div>
         </main>
