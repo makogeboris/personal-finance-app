@@ -64,6 +64,8 @@ export function SignupForm({
     }
   };
 
+  const authInProgress = isSubmitting;
+
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card className="overflow-hidden p-0">
@@ -148,7 +150,15 @@ export function SignupForm({
 
               <FieldDescription className="flex items-center gap-2 self-center text-center">
                 Already have an account?{" "}
-                <Link className="font-bold" href="/login">
+                <Link
+                  href={authInProgress ? "#" : "/login"}
+                  aria-disabled={authInProgress}
+                  tabIndex={authInProgress ? -1 : undefined}
+                  className={cn(
+                    "font-bold",
+                    authInProgress && "pointer-events-none opacity-50",
+                  )}
+                >
                   Login
                 </Link>
               </FieldDescription>

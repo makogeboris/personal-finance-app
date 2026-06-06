@@ -1,4 +1,5 @@
 import Link from "next/link";
+import DemoButton from "./DemoButton";
 
 export default function Hero() {
   return (
@@ -21,17 +22,12 @@ export default function Hero() {
         <div className="mb-8 flex flex-wrap justify-center gap-5">
           <Link
             href="/signup"
-            className="bg-primary focus-visible:outline-primary/90 hover:bg-chart-1 text-background transform rounded-full px-8 py-3 text-sm font-semibold transition hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-offset-2"
+            className="bg-primary focus-visible:outline-primary/90 hover:bg-chart-1 text-background transform rounded-full px-8 py-3 text-sm font-semibold transition focus-visible:outline-2 focus-visible:outline-offset-2"
           >
             Start for free
           </Link>
 
-          <Link
-            href="/login?demo=true"
-            className="border-accent focus-visible:outline-primary/90 hover:border-chart-1 hover:text-chart-1 transform rounded-full border px-8 py-3 text-sm font-semibold transition hover:-translate-y-0.5 focus-visible:outline-2"
-          >
-            Try the demo
-          </Link>
+          <DemoButton />
         </div>
 
         <div className="text-ring flex items-center justify-center gap-4 text-xs">
