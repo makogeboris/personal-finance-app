@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Logo } from "../shared/Logo";
+import DemoButton from "./DemoButton";
 
 export default function Footer() {
   return (
@@ -19,17 +20,12 @@ export default function Footer() {
         <div className="flex flex-col items-center gap-3">
           <Link
             href="/signup"
-            className="text-foreground hover:bg-secondary bg-background rounded-full px-8 py-3 text-sm font-semibold transition"
+            className="bg-chart-1 text-background rounded-full px-6 py-3 text-sm font-semibold transition hover:opacity-90"
           >
             Create free account
           </Link>
 
-          <Link
-            href="/login?demo=true"
-            className="bg-chart-1 text-background rounded-full px-8 py-3 text-sm font-semibold transition hover:opacity-90"
-          >
-            Explore the demo
-          </Link>
+          <DemoButton />
 
           <span className="text-ring text-xs">
             Free forever for personal use
