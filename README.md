@@ -1,18 +1,12 @@
-# Finance — Personal Finance App
+# Personal Finance App
 
-A full-stack personal finance web application built with Next.js 16, Supabase, and Tailwind CSS. Track transactions, manage budgets, monitor savings pots, and stay on top of recurring bills — all from one clean dashboard.
+A full-stack personal finance web application built with Next.js 16, Supabase, and Tailwind CSS. Track transactions, manage budgets, monitor savings pots, and stay on top of recurring bills, all from one clean dashboard.
 
 ![Finance App Preview](/public/images/preview.jpg)
-
----
 
 ## Live Demo
 
 🔗 [personal-finance-xeno.vercel.app](https://personal-finance-xeno.vercel.app)
-
-Try the app instantly with the demo account — no sign-up required.
-
----
 
 ## Features
 
@@ -40,8 +34,6 @@ Try the app instantly with the demo account — no sign-up required.
 - All mutation actions (add, edit, delete) are blocked with a prompt to create a free account
 - One-click access from the landing page and login page
 
----
-
 ## Tech Stack
 
 | Category        | Technology              |
@@ -58,8 +50,6 @@ Try the app instantly with the demo account — no sign-up required.
 | Package Manager | pnpm                    |
 | Deployment      | Vercel                  |
 
----
-
 ## Key Architectural Decisions
 
 **Dual data source** — Demo users read from a static `data.json` file. Real users query Supabase. The same pages and components serve both — only the data fetching layer differs.
@@ -72,8 +62,6 @@ Try the app instantly with the demo account — no sign-up required.
 
 **Route protection at two layers** — `proxy.ts` handles session checks at the network edge. The `(app)/layout.tsx` adds a second server-side check, so protected pages are never accessible without a valid session.
 
----
-
 ## What I Learned
 
 Building this project end-to-end provided hands-on experience with:
@@ -84,17 +72,11 @@ Building this project end-to-end provided hands-on experience with:
 - **nuqs** — URL-based state management that keeps UI in sync with the browser URL for shareable, bookmarkable filter states
 - **Full-stack data patterns** — dual data sources, server-side fetching with client-side filtering, and optimistic UI
 
----
+## Acknowledgements
+
+Design inspiration and challenge brief provided by **[Frontend Mentor](https://www.frontendmentor.io)**
 
 ## Author
 
 - Frontend Mentor - [makogeboris](https://www.frontendmentor.io/profile/makogeboris)
 - Twitter - [makogeboris](https://x.com/makogeboris)
-
----
-
-## Acknowledgements
-
-Design inspiration and challenge brief provided by **[Frontend Mentor](https://www.frontendmentor.io)**.
-
-Frontend Mentor challenges help developers improve their skills by building realistic projects. The original design for this personal finance app was created by the Frontend Mentor team and served as the foundation for the UI, layout, and feature requirements of this project.
