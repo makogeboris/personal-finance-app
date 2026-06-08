@@ -93,7 +93,7 @@ export function SignupForm({
                   <Input
                     id="name"
                     type="text"
-                    placeholder="Lenny Smith"
+                    placeholder="John Doe"
                     aria-invalid={!!errors.name}
                     {...register("name")}
                   />
@@ -107,7 +107,7 @@ export function SignupForm({
                   <Input
                     id="email"
                     type="email"
-                    placeholder="lennysmith@example.com"
+                    placeholder="email@example.com"
                     aria-invalid={!!errors.email}
                     {...register("email")}
                   />

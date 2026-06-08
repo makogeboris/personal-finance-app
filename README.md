@@ -1,36 +1,100 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Finance — Personal Finance App
 
-## Getting Started
+A full-stack personal finance web application built with Next.js 16, Supabase, and Tailwind CSS. Track transactions, manage budgets, monitor savings pots, and stay on top of recurring bills — all from one clean dashboard.
 
-First, run the development server:
+![Finance App Preview](/public/images/preview.jpg)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+---
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Live Demo
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+🔗 [personal-finance-xeno.vercel.app](https://personal-finance-xeno.vercel.app)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Try the app instantly with the demo account — no sign-up required.
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## Features
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Core Pages
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- **Overview** — Financial snapshot at a glance: balance, income, expenses, budget progress, pot totals, and recurring bill status
+- **Transactions** — Full transaction history with search, sort by six criteria, filter by category, and pagination (10 per page)
+- **Budgets** — Create and manage spending budgets per category, track monthly spending progress with a live donut chart, and view the latest three transactions per budget
+- **Pots** — Set savings goals, track progress with animated pot visuals, and add or withdraw money with a live progress preview
+- **Recurring Bills** — Monitor all recurring payments with paid, upcoming, and due-soon status indicators
+- **Profile / Account Settings** — Update name, email, and password; view active session; sign out; delete account
 
-## Deploy on Vercel
+### Authentication
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- Email and password sign-up and login
+- Forgot password and reset password flows via Supabase PKCE
+- Email change with verification
+- Protected routes — all app pages require authentication
+- Demo account with read-only access — no sign-up needed
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Demo Account
+
+- Pre-seeded with realistic financial data
+- Full read-only access to all pages
+- All mutation actions (add, edit, delete) are blocked with a prompt to create a free account
+- One-click access from the landing page and login page
+
+---
+
+## Tech Stack
+
+| Category        | Technology              |
+| --------------- | ----------------------- |
+| Framework       | Next.js 16 (App Router) |
+| Language        | TypeScript              |
+| Styling         | Tailwind CSS v4         |
+| UI Components   | shadcn/ui               |
+| Database & Auth | Supabase                |
+| Forms           | React Hook Form + Zod   |
+| URL State       | nuqs                    |
+| Animations      | Motion (Framer Motion)  |
+| Charts          | Recharts                |
+| Package Manager | pnpm                    |
+| Deployment      | Vercel                  |
+
+---
+
+## Key Architectural Decisions
+
+**Dual data source** — Demo users read from a static `data.json` file. Real users query Supabase. The same pages and components serve both — only the data fetching layer differs.
+
+**Client-side filtering** — Search, sort, and filter operations on Transactions and Recurring Bills happen client-side after a single server fetch. This provides instant UI feedback without server round-trips for a dataset of this size.
+
+**URL state with nuqs** — All filter, sort, and pagination state lives in the URL. Pages are shareable and bookmarkable with filters applied, and browser back/forward navigation works naturally.
+
+**Server Actions throughout** — All mutations (create, update, delete) use Next.js Server Actions rather than API routes. Forms submit directly to server functions, keeping the client bundle lean.
+
+**Route protection at two layers** — `proxy.ts` handles session checks at the network edge. The `(app)/layout.tsx` adds a second server-side check, so protected pages are never accessible without a valid session.
+
+---
+
+## What I Learned
+
+Building this project end-to-end provided hands-on experience with:
+
+- **Next.js App Router** — route groups, nested layouts, Server Components vs Client Components, and Server Actions
+- **Supabase** — auth flows (PKCE), Row Level Security policies, service role admin operations, and real-time data
+- **Tailwind CSS v4** — the new `@theme` and `@theme inline` system, CSS variable bridging, and removing the config file entirely
+- **nuqs** — URL-based state management that keeps UI in sync with the browser URL for shareable, bookmarkable filter states
+- **Full-stack data patterns** — dual data sources, server-side fetching with client-side filtering, and optimistic UI
+
+---
+
+## Author
+
+- Frontend Mentor - [makogeboris](https://www.frontendmentor.io/profile/makogeboris)
+- Twitter - [makogeboris](https://x.com/makogeboris)
+
+---
+
+## Acknowledgements
+
+Design inspiration and challenge brief provided by **[Frontend Mentor](https://www.frontendmentor.io)**.
+
+Frontend Mentor challenges help developers improve their skills by building realistic projects. The original design for this personal finance app was created by the Frontend Mentor team and served as the foundation for the UI, layout, and feature requirements of this project.

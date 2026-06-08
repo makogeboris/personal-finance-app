@@ -1,112 +1,3 @@
-// "use client";
-
-// import {
-//   Pagination,
-//   PaginationContent,
-//   PaginationEllipsis,
-//   PaginationItem,
-//   PaginationLink,
-//   PaginationNext,
-//   PaginationPrevious,
-// } from "@/components/ui/pagination";
-// import { useQueryState, parseAsInteger } from "nuqs";
-
-// export default function TransactionsPagination({
-//   total,
-//   page,
-//   perPage,
-// }: {
-//   total: number;
-//   page: number;
-//   perPage: number;
-// }) {
-//   const [, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
-//   const totalPages = Math.ceil(total / perPage);
-
-//   if (totalPages <= 1) return null;
-
-//   // Generate page numbers to show with ellipsis logic
-//   function getPageNumbers(): (number | "ellipsis")[] {
-//     if (totalPages <= 5) {
-//       return Array.from({ length: totalPages }, (_, i) => i + 1);
-//     }
-//     if (page <= 3) {
-//       return [1, 2, 3, 4, "ellipsis", totalPages];
-//     }
-//     if (page >= totalPages - 2) {
-//       return [
-//         1,
-//         "ellipsis",
-//         totalPages - 3,
-//         totalPages - 2,
-//         totalPages - 1,
-//         totalPages,
-//       ];
-//     }
-//     return [1, "ellipsis", page - 1, page, page + 1, "ellipsis", totalPages];
-//   }
-
-//   const pages = getPageNumbers();
-
-//   return (
-//     <Pagination>
-//       <PaginationContent>
-//         {/* Previous */}
-//         <PaginationItem>
-//           <PaginationPrevious
-//             href="#"
-//             onClick={(e) => {
-//               e.preventDefault();
-//               if (page > 1) setPage(page - 1);
-//             }}
-//             aria-disabled={page <= 1}
-//             className={page <= 1 ? "pointer-events-none opacity-40" : ""}
-//           />
-//         </PaginationItem>
-
-//         {/* Page numbers */}
-//         <div className="flex items-center gap-1">
-//           {pages.map((p, i) =>
-//             p === "ellipsis" ? (
-//               <PaginationItem key={`ellipsis-${i}`}>
-//                 <PaginationEllipsis />
-//               </PaginationItem>
-//             ) : (
-//               <PaginationItem key={p}>
-//                 <PaginationLink
-//                   href="#"
-//                   isActive={p === page}
-//                   onClick={(e) => {
-//                     e.preventDefault();
-//                     setPage(p);
-//                   }}
-//                 >
-//                   {p}
-//                 </PaginationLink>
-//               </PaginationItem>
-//             ),
-//           )}
-//         </div>
-
-//         {/* Next */}
-//         <PaginationItem>
-//           <PaginationNext
-//             href="#"
-//             onClick={(e) => {
-//               e.preventDefault();
-//               if (page < totalPages) setPage(page + 1);
-//             }}
-//             aria-disabled={page >= totalPages}
-//             className={
-//               page >= totalPages ? "pointer-events-none opacity-40" : ""
-//             }
-//           />
-//         </PaginationItem>
-//       </PaginationContent>
-//     </Pagination>
-//   );
-// }
-
 "use client";
 
 import {
@@ -134,7 +25,6 @@ export default function TransactionsPagination({
 
   if (totalPages <= 1) return null;
 
-  // Desktop: show up to 5 pages with ellipsis
   function getDesktopPages(): (number | "ellipsis")[] {
     if (totalPages <= 5) {
       return Array.from({ length: totalPages }, (_, i) => i + 1);
@@ -155,7 +45,6 @@ export default function TransactionsPagination({
     return [1, "ellipsis", page - 1, page, page + 1, "ellipsis", totalPages];
   }
 
-  // Mobile: max 4 numbers — pattern: first, current-1, current, last with ellipsis
   function getMobilePages(): (number | "ellipsis")[] {
     if (totalPages <= 4) {
       return Array.from({ length: totalPages }, (_, i) => i + 1);
@@ -197,7 +86,6 @@ export default function TransactionsPagination({
   return (
     <Pagination>
       <PaginationContent>
-        {/* Previous */}
         <PaginationItem>
           <PaginationPrevious
             href="#"
@@ -210,17 +98,14 @@ export default function TransactionsPagination({
           />
         </PaginationItem>
 
-        {/* Mobile pages — max 4 */}
         <div className="flex items-center gap-1 sm:hidden">
           {renderPages(mobilePages)}
         </div>
 
-        {/* Desktop pages — up to 5+ with ellipsis */}
         <div className="hidden items-center gap-1 sm:flex">
           {renderPages(desktopPages)}
         </div>
 
-        {/* Next */}
         <PaginationItem>
           <PaginationNext
             href="#"
