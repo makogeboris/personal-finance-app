@@ -90,7 +90,7 @@ function Name({ profile }: { profile: ProfileData }) {
         <Input
           id="name"
           type="text"
-          placeholder="Lenny Smith"
+          placeholder="John Doe"
           disabled={profile.isDemo}
           aria-invalid={!!errors.name}
           {...register("name")}
@@ -165,7 +165,7 @@ function Email({ profile }: { profile: ProfileData }) {
         <Input
           id="email"
           type="email"
-          placeholder="lennysmith@example.com"
+          placeholder="email@example.com"
           disabled={profile.isDemo}
           aria-invalid={!!errors.email}
           {...register("email")}
