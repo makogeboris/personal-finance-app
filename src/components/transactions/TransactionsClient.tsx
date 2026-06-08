@@ -2,7 +2,7 @@
 
 import { useQueryStates, parseAsString, parseAsInteger } from "nuqs";
 import TransactionsTable from "./Table";
-import type { Transaction, Category, SortOption } from "@/types";
+import type { Transaction, SortOption } from "@/types";
 
 const PER_PAGE = 10;
 
