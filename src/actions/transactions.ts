@@ -3,6 +3,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { isDemoUser } from "@/lib/auth/isDemoUser";
 import { revalidatePath } from "next/cache";
+import { capitalizeWords } from "@/lib/utils";
 
 export async function addTransactionAction(data: {
   name: string;
@@ -28,7 +29,9 @@ export async function addTransactionAction(data: {
   const amount =
     data.type === "income" ? Math.abs(data.amount) : -Math.abs(data.amount);
 
-  const avatar = data.name
+  const formattedName = capitalizeWords(data.name);
+
+  const avatar = formattedName
     .split(" ")
     .map((n) => n[0])
     .join("")
@@ -37,7 +40,7 @@ export async function addTransactionAction(data: {
 
   const { error } = await supabase.from("transactions").insert({
     user_id: user.id,
-    name: data.name,
+    name: formattedName,
     amount,
     category: data.category,
     date: data.date,

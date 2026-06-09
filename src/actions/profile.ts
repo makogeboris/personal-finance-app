@@ -13,6 +13,8 @@ export async function updateNameAction(data: { name: string }) {
   } = await supabase.auth.getUser();
   if (!user) return { error: "Not authenticated" };
 
+  const formattedName = data.name.trim();
+
   if (isDemoUser(user.id)) {
     return {
       error:
@@ -21,9 +23,9 @@ export async function updateNameAction(data: { name: string }) {
   }
 
   const [profileResult, authResult] = await Promise.all([
-    supabase.from("profiles").update({ name: data.name }).eq("id", user.id),
+    supabase.from("profiles").update({ name: formattedName }).eq("id", user.id),
     supabase.auth.updateUser({
-      data: { name: data.name },
+      data: { name: formattedName },
     }),
   ]);
 
