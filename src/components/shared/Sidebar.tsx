@@ -120,6 +120,8 @@ function SidebarLink({
   return (
     <Link
       href={item.href}
+      aria-label={item.label}
+      aria-current={active ? "page" : undefined}
       className={clsx(
         "group rounded-r-12 flex min-h-14 items-center gap-5 border-l-4 py-4 pl-8 transition-colors",
         collapsed ? "px-0" : "px-4",
@@ -171,6 +173,8 @@ export function BottomNav() {
             <Link
               key={item.href}
               href={item.href}
+              aria-label={item.label}
+              aria-current={active ? "page" : undefined}
               className={clsx(
                 "group flex min-h-11 w-full flex-col items-center justify-center gap-1 rounded-t-md border-b-4 sm:min-h-16.5",
                 active

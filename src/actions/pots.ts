@@ -4,6 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 import { isDemoUser } from "@/lib/auth/isDemoUser";
 import { revalidatePath } from "next/cache";
 import { COLOR_MAP } from "@/lib/constants/categories";
+import { capitalizeWords } from "@/lib/utils";
 
 export async function addPotAction(data: {
   name: string;
@@ -24,7 +25,7 @@ export async function addPotAction(data: {
 
   const { error } = await supabase.from("pots").insert({
     user_id: user.id,
-    name: data.name,
+    name: capitalizeWords(data.name),
     target: data.target,
     saved: 0,
     theme: COLOR_MAP[data.theme] ?? data.theme,
@@ -58,7 +59,7 @@ export async function editPotAction(data: {
   const { error } = await supabase
     .from("pots")
     .update({
-      name: data.name,
+      name: capitalizeWords(data.name),
       target: data.target,
       theme: COLOR_MAP[data.theme] ?? data.theme,
     })

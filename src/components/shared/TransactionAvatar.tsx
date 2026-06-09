@@ -30,7 +30,7 @@ export default function TransactionAvatar({
       >
         <Image
           src={`/avatars/${avatar}`}
-          alt={name}
+          alt=""
           fill
           className="object-cover"
         />

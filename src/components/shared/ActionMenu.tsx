@@ -37,6 +37,9 @@ export function ActionMenu({ items }: { items: ActionItem[] }) {
     <div ref={ref}>
       <button
         onClick={() => setOpen((prev) => !prev)}
+        aria-label="More options"
+        aria-haspopup="menu"
+        aria-expanded={open}
         className="focus-visible:outline-foreground cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2"
       >
         <svg
